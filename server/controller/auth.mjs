@@ -1,5 +1,4 @@
 import userSchema from '../models/User.mjs';
-import hc from '../config/http_code.mjs'
 import https_codes from '../config/http_code.mjs';
 import configs from '../config/config.mjs';
 import bcrypt from 'bcrypt'
@@ -19,8 +18,8 @@ export async function signupController(req, res) {
         const data = { name: req.body.name, email: req.body.email, password: passwordHash, lastLogin: Date.now() };
         req.session.user = data;
 
-        const verificationCode = generateVerificationCode(6);
-        req.session.verificationCode = verificationCode;
+        const {verificationCode,token} = generateVerificationCode(6);
+        req.session.token = token;
 
         const result = await sendEmailVerificationCode(req.body.email, verificationCode);
         if (!result) return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Failed To Send Email" } });
@@ -56,6 +55,8 @@ export async function loginController(req, res) {
     }
 }
 
+// DELETE Operation for user
+
 export async function signOutUser(req, res) {
     try {
         if (!req.session) return res.status(https_codes.BAD_REQUEST).json({ success: false, msg: "No user found" });
@@ -64,5 +65,37 @@ export async function signOutUser(req, res) {
     } catch (error) {
         console.log('Error from signout', error);
         return res.status(https_codes.SERVER_ERROR).json({ success: false, msg: "failed to SignOut" });
+    }
+}
+
+// UPDATE Operation for user
+
+export async function forgetPassword(req, res) {
+    try {
+
+        if (!req.session) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user data Please login again." } }) }
+        if (!req.body.email) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Email not found." } }) }
+        if (!req.body.password) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Password is not provided" } }) }
+
+        const salt = await bcrypt.genSalt(configs.SALT_ROUND);
+        const passwordHash = await bcrypt.hash(req.body.password, salt);
+
+        const userEmail = req.body.email;
+        let user = await userSchema.findOne({ email: userEmail });
+        if (!user) return res.status(https_codes.CONFLICT_ERROR).json({ success: false, error: { msg: "User not found" } });
+
+        const {verificationCode,token} = generateVerificationCode(6);
+        req.session.token = token;
+        req.session.newPassword = passwordHash;
+        req.session.email = userEmail
+
+        const result = await sendEmailVerificationCode(userEmail, verificationCode);
+        if (!result) return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Failed To Send Email" } });
+
+        return res.status(https_codes.SUCCESS).json({success:true, msg:"Verify your email to change password"});
+
+    } catch (error) {
+        console.error("error on changing user's password: ", error);
+        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error from server on changing user's password" } });
     }
 }

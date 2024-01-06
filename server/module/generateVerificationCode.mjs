@@ -1,3 +1,6 @@
+import jsonwebtoken from 'jsonwebtoken'
+const jwt = jsonwebtoken;
+
 export default function generateVerificationCode(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let verificationCode = '';
@@ -7,5 +10,7 @@ export default function generateVerificationCode(length) {
         verificationCode += characters.charAt(randomIndex);
     }
 
-    return verificationCode;
+    const token = jwt.sign({msg:"done"},verificationCode,{"expiresIn":"15m"});
+
+    return {verificationCode,token};
 }

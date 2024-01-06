@@ -2,8 +2,6 @@ import jsonwebtoken from "jsonwebtoken";
 import nodemailer from "nodemailer"
 import configs from "../config/config.mjs";
 import https_codes from "../config/http_code.mjs";
-import userSchema from '../models/User.mjs';
-
 
 const jwt = jsonwebtoken;
 
@@ -14,7 +12,6 @@ const transporter = nodemailer.createTransport({
 		pass: configs.SERVICE_EMAIL_PASSWORD
 	}
 });
-
 
 export async function sendEmailVerificationCode(email, verificationCode) {
 	const mailOptions = {
@@ -46,42 +43,38 @@ export async function sendEmailVerificationCode(email, verificationCode) {
 	}
 }
 
-export async function verifyEmailVerificationCode(req, res) {
 
-	try {
+export async function verifyEmailVerificationCode(callback) {
 
-		if (!req.session) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user data Please signup again." } }) }
-		if (!req.session.user) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user data Please signup again." } }) }
+	return async (req, res) => {
 
-		const verificationCode = req.session.verificationCode;
-		const userDataToRegister = req.session.user;
+		try {
+			if (!req.session) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user data Please signup again." } }) }
+			if (!req.session.token) { return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error on verifying. PLease try again." } }) }
+			if (!req.body.verificationCode) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "verification code isn't provided." } }) };
 
-		// IF
-		if (!req.body.verificationCode) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "verification code isn't provided." } }) }
-		if (typeof req.body.verificationCode !== 'string' && typeof verificationCode !== 'string') return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Incorrect verification code format" } });
-		if (req.body.verificationCode.length !== 6 && verificationCode.length !== 6) return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Unauthorized verification code." } });
-		if (req.body.verificationCode !== verificationCode) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Incorrect verification code." } }) };
+			const token = req.session.token;
+			const verificationCode = req.body.verificationCode;
 
-		// ELSE
-		await userSchema.create(userDataToRegister).then(async (user) => {
-			user.isEmailVerified = true;
-			await user.save();
-			req.session.user = user;
-			return res.status(https_codes.SUCCESS).json({ success: true, msg: "Signed-up successfully" });
-		}).catch((error) => {
-			if (error.code === 11000 || error.code === 11001) {
-				console.error('Duplicate email');
-				return res.status(https_codes.CONFLICT_ERROR).json({ success: false, error: "Email address is already taken" });
+			if (typeof verificationCode !== 'string') return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Incorrect verification code format." } });
+			if (verificationCode.length !== 6) return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Unauthorized verification code." } });
+
+			try {
+				const decoded = jwt.verify(token, verificationCode);
+				if (decoded.msg !== 'done') return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error on verification. Please try again." } });
+			} catch (err) {
+				console.log("error from verifyEmailVerificationCode() : ", err);
+				if (err.name === 'TokenExpiredError') return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Verification code expired. Please try again." } });
+
+				return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error on matching verification code. Please try again." } });
 			}
-			else {
-				console.error('error on signing-up user: ', error);
-				return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "Error from server on creating account" });
-			}
-		});
 
+			delete req.session.token;
+			return await callback(req, res);
 
-	} catch (error) {
-		console.error('error on signing-up user: ', error);
-		return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "Error from server on signup" });
+		} catch (error) {
+			console.error('error on verifying user: ', error);
+			return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "Error from server on verifying Email" });
+		}
 	}
 }

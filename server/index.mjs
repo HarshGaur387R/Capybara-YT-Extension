@@ -49,8 +49,8 @@ app.set('view engine', 'ejs');
 
 function startServer() {
 
-    app.get('/', allowOnlyUnverified, (req, res) => { res.send("Welcome to intro") });
-    app.get('/home', allowOnlyVerifiedUsers, (req, res) => { res.send('welcome to home') })
+    app.get('/', allowOnlyUnverified, (req, res) => {  res.send("Welcome to intro") });
+    app.get('/home', allowOnlyVerifiedUsers, (req, res) => {res.send('welcome to home') })
 
     app.get('/login', allowOnlyUnverified, (req, res) => { res.send("welcome to login") });
     app.get('/signup', allowOnlyUnverified, (req, res) => { res.send("welcome to signup") });
