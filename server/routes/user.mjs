@@ -1,5 +1,5 @@
 import express from 'express';
-import { changePassword, myData, updateEmail } from '../controller/user.mjs';
+import { changePassword, myData, updateEmail, updateUserName } from '../controller/user.mjs';
 import { body, validationResult } from 'express-validator';
 import https_codes from '../config/http_code.mjs';
 import { passValidUser } from '../middleware/passValidUser.mjs';
@@ -40,5 +40,8 @@ userRoute.put('/updatePassword', [
 
 // ROUTE 5: verify and then update user's password.
 userRoute.post('/verifyEmailToUpdatePassword', passValidUser, await verifyEmailVerificationCode(changePassword2));
+
+// ROUTE 6: Update user Name.
+userRoute.put("/updateUserName", passValidUser , updateUserName);
 
 export default userRoute;

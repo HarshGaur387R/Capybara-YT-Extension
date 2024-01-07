@@ -22,7 +22,7 @@ export async function updateEmail2(req, res) {
         return res.status(https_codes.SUCCESS).json({ success: true, meg: "User's email updated successfully" });
 
     } catch (error) {
-        console.log("error on updating email:", error);
+        console.error("error on updating email:", error);
         return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error on updating email" } });
     }
 }

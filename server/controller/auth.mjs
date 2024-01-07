@@ -63,7 +63,7 @@ export async function signOutUser(req, res) {
         await req.session.destroy();
         return res.status(https_codes.SUCCESS).json({ success: true, msg: "SignOut successful" });
     } catch (error) {
-        console.log('Error from signout', error);
+        console.error('Error from signout', error);
         return res.status(https_codes.SERVER_ERROR).json({ success: false, msg: "failed to SignOut" });
     }
 }

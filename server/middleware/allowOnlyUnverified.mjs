@@ -3,7 +3,7 @@ export function allowOnlyUnverified(req, res, next) {
         if (req.session.user) { return res.redirect('/home') }
         next()
     } catch (error) {
-        console.log('error from allowOnlyUnverified middleware: ', error);
+        console.error('error from allowOnlyUnverified middleware: ', error);
         return res.redirect('/');
     }
 }

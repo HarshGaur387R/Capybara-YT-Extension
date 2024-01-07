@@ -38,7 +38,7 @@ export async function sendEmailVerificationCode(email, verificationCode) {
 		const info = await transporter.sendMail(mailOptions);
 		return true;
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		return false;
 	}
 }
@@ -63,7 +63,7 @@ export async function verifyEmailVerificationCode(callback) {
 				const decoded = jwt.verify(token, verificationCode);
 				if (decoded.msg !== 'done') return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error on verification. Please try again." } });
 			} catch (err) {
-				console.log("error from verifyEmailVerificationCode() : ", err);
+				console.error("error from verifyEmailVerificationCode() : ", err);
 				if (err.name === 'TokenExpiredError') return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Verification code expired. Please try again." } });
 
 				return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error on matching verification code. Please try again." } });

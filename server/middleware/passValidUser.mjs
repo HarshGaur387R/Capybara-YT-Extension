@@ -11,10 +11,11 @@ export async function passValidUser(req, res, next) {
         if (!req.session) return res.status(https_codes.UNAUTH_ERROR).json({ success: false, error: { msg: "Not permitted to perform this action. Please login" } })
         else if (!req.session.user) return res.status(https_codes.UNAUTH_ERROR).json({ success: false, error: { msg: "User not found. Please login again" } })
 
-        const id = req.session.user._id.toString();
+
+        const id = req.session.user._id;
         if (!id) return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Incorrect token is provided" } });
 
-        const user = await userSchema.findById(id).select('-password');
+        const user = await userSchema.findById(id.toString()).select('-password');
         if (!user) return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Incorrect token is provided" } });
         next();
 

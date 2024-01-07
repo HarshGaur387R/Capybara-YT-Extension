@@ -75,32 +75,23 @@ export async function changePassword(req, res) {
     }
 }
 
-export async function updateUser(req, res) {
+export async function updateUserName(req, res) {
     try {
-        const { name, email, password } = req.body;
-        const user = req.user;
-        const data = {}
 
-        if (password) {
-            const salt = await bcrypt.genSalt(configs.SALT_ROUND);
-            const passwordHash = await bcrypt.hash(req.body.password, salt);
-            data.name = name
-            data.email = email
-            data.password = passwordHash
-        }
-        else {
-            data.name = name;
-            data.email = email;
-        }
+        if (!req.session) return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on finding user. Please login again." } })
 
-        user.updateOne(data).select('-password').then((updatedUser) => {
-            return res.status(https_codes.SUCCESS).json({ success: true, data: updatedUser });
+        const id = req.session.user._id;
+        const { name } = req.body;
+
+        userSchema.findByIdAndUpdate(id, { name: name },{new:true}).then((updatedUser) => {
+            req.session.user = updatedUser;
+            return res.status(https_codes.SUCCESS).json({ success: true, msg: "Username updated successfully" });
         }).catch((error) => {
-            console.error('error from updateUser\'s updateOne function:', error);
-            return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "error on updating user." });
+            console.error('error from updateUserName\'s updateOne function:', error);
+            return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "error on updating user's name." });
         })
     } catch (error) {
-        console.error('error from updateUser catch statement:', error);
-        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "error from server." });
+        console.error('error from updateUserName catch statement:', error);
+        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "error from server on updating user's name." });
     }
 }
