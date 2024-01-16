@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+.jua-font {
+    font-family: 'Jua', sans-serif;
+}
+
+.font-size-32 {
+    font-size: 32px;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.capy-form-container{
+    width: 400px;
+    height: 350px;
+}
+
+.capy-form{
+    gap: 20px;
+}
+
+.capy-extension-label {
+    font-weight: 500;
+    font-size: 32px;
+    font-family: 'Jua', sans-serif;
+    color: white;
+}
+
+
+.capy-extension-btn {
+    font-family: 'Jua', sans-serif;
+    font-size: x-large;
+    border-radius: 30px;
+    padding: 5px;
+    width: 150px;
+    background-color: #EC9C00;
+    color: black;
+    border: 3px solid #FFF;
+}
+
+.capy-extesnion-link {
+    color: #EC9C00;
+    font-family: 'Jua', sans-serif;
+    font-size: 15px;
+}
+
+.capy-extension-input {
+    width: 100%;
+    font-size: x-large;
+    border: 2px solid #000;
+    background: #D9D9D9;
+    box-shadow: 0px 0px 0px 4px #EC9C00;
+    padding: 5px;
+}
+
+.accessKeyInputContainer{
+    width: 350px;
+}

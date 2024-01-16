@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap-5.0.2-dist/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="popup.css">
+
+    <title>Capybara comments - Comments || Transcribe generator</title>
+</head>
+
+<body style="background-color: #161616;">
+
+    <div id="formContainer"
+        class="capy-form-container container d-flex flex-column justify-content-center align-items-center">
+        <form id="accessKeyForm" action=""
+            class="capy-form d-flex flex-column justify-content-center align-items-center">
+            <label for="accessKeyInput" class="capy-extension-label">Please Enter Access Key</label>
+            <div class="accessKeyInputContainer">
+                <input id="accessKeyInput" class="capy-extension-input" type="text" required minlength="1">
+            </div>
+            <button id="accessKeySubmitBtn" class="capy-extension-btn" type="submit">Submit</button>
+            <div>
+                <a class="capy-extesnion-link" href="#">Get Access Key</a>
+            </div>
+        </form>
+    </div>
+
+    <div id="authorizedContainer"
+        class="capy-form-container container d-flex flex-column justify-content-center align-items-center d-none">
+        <div id="authorizedFormContainer" action=""
+            class="capy-form d-flex flex-column justify-content-center align-items-center">
+            <h1 for="accessKeyInput" class="capy-extension-label" style="color:#EC9C00; font-size:25px">Authorized
+                Successfully ✅</h1>
+            <button id="accessKeyRemoveBtn" class="capy-extension-btn" type="button">Remove key</button>
+        </div>
+    </div>
+
+    <script src="bootstrap-5.0.2-dist/bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+    <script src="popup.js"></script>
+</body>
+
+</html>

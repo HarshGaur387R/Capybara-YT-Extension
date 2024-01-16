@@ -1,8 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new Schema({
-    name:{
-        type:String,
+    name: {
+        type: String,
         required: true,
     },
     email: {
@@ -14,12 +14,16 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
-    isEmailVerified:{
+    isEmailVerified: {
         type: Boolean,
         default: false
     },
     lastLogin: {
         type: Date,
+    },
+    accessKey: {
+        type: String,
+        unique: true
     },
     date: {
         type: Date,

@@ -4,6 +4,9 @@ import configs from '../config/config.mjs';
 import { sendEmailVerificationCode } from '../module/EmailVerification.mjs';
 import generateVerificationCode from '../module/generateVerificationCode.mjs';
 import userSchema from '../models/User.mjs'
+import jsonwebtoken from 'jsonwebtoken'
+
+const jwt = jsonwebtoken;
 
 export async function myData(req, res) {
     try {
@@ -83,7 +86,7 @@ export async function updateUserName(req, res) {
         const id = req.session.user._id;
         const { name } = req.body;
 
-        userSchema.findByIdAndUpdate(id, { name: name },{new:true}).then((updatedUser) => {
+        userSchema.findByIdAndUpdate(id, { name: name }, { new: true }).then((updatedUser) => {
             req.session.user = updatedUser;
             return res.status(https_codes.SUCCESS).json({ success: true, msg: "Username updated successfully" });
         }).catch((error) => {
@@ -93,5 +96,32 @@ export async function updateUserName(req, res) {
     } catch (error) {
         console.error('error from updateUserName catch statement:', error);
         return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "error from server on updating user's name." });
+    }
+}
+
+
+// UPDATE Operation for user 
+
+export async function generateAccessKey(req, res) {
+    try {
+
+        if (!req.session.user._id) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user id Please login again." } }) }
+
+        const user = req.session.user;
+        const _id = user._id;
+
+        const accessKey = jwt.sign({ _id }, configs.ACCESS_KEY_SECRET);
+        let newUser = await userSchema.findById(_id);
+
+        newUser.accessKey = accessKey;
+        await newUser.save();
+
+        req.session.user = newUser;
+
+        return res.status(https_codes.SUCCESS).json({ success: true, data: { accessKey } });
+
+    } catch (error) {
+        console.error("error on creating access token: ", error);
+        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error from server on creating access token" } });
     }
 }

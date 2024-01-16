@@ -4,6 +4,9 @@ import configs from '../config/config.mjs';
 import bcrypt from 'bcrypt'
 import { sendEmailVerificationCode } from '../module/EmailVerification.mjs';
 import generateVerificationCode from '../module/generateVerificationCode.mjs'
+import jsonwebtoken from 'jsonwebtoken'
+
+const jwt = jsonwebtoken;
 
 // CREATE Operation for User
 export async function signupController(req, res) {
@@ -18,7 +21,7 @@ export async function signupController(req, res) {
         const data = { name: req.body.name, email: req.body.email, password: passwordHash, lastLogin: Date.now() };
         req.session.user = data;
 
-        const {verificationCode,token} = generateVerificationCode(6);
+        const { verificationCode, token } = generateVerificationCode(6);
         req.session.token = token;
 
         const result = await sendEmailVerificationCode(req.body.email, verificationCode);
@@ -84,7 +87,7 @@ export async function forgetPassword(req, res) {
         let user = await userSchema.findOne({ email: userEmail });
         if (!user) return res.status(https_codes.CONFLICT_ERROR).json({ success: false, error: { msg: "User not found" } });
 
-        const {verificationCode,token} = generateVerificationCode(6);
+        const { verificationCode, token } = generateVerificationCode(6);
         req.session.token = token;
         req.session.newPassword = passwordHash;
         req.session.email = userEmail
@@ -92,10 +95,31 @@ export async function forgetPassword(req, res) {
         const result = await sendEmailVerificationCode(userEmail, verificationCode);
         if (!result) return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Failed To Send Email" } });
 
-        return res.status(https_codes.SUCCESS).json({success:true, msg:"Verify your email to change password"});
+        return res.status(https_codes.SUCCESS).json({ success: true, msg: "Verify your email to change password" });
 
     } catch (error) {
         console.error("error on changing user's password: ", error);
         return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error from server on changing user's password" } });
+    }
+}
+
+// READ Operation for user 
+
+export async function verifyAccessKey(req, res) {
+    try {
+
+        if (!req.body.accessKey) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user data. Please login again." } }) }
+        const accessKey = req.body.accessKey;
+
+        const id = jwt.verify(accessKey, configs.ACCESS_KEY_SECRET)._id;
+
+        const user = await userSchema.findById(id);
+        if (!user) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Invalid accessKey. No user authorized with this key" } }) };
+        if (user.accessKey !== accessKey) return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Invalid accessKey. This key is not authorized to any user" } });
+
+        return res.status(https_codes.SUCCESS).json({ success: true, msg: "Authorized" });
+    } catch (error) {
+        console.error('error on verifying accessToken: ', error);
+        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "Error from server on verifying AccessToken" });
     }
 }

@@ -1,0 +1,30 @@
+when i am running `npm run build` command i am getting so many errors:
+
+this is my 'webpack.config.mjs' file code:
+
+```
+import { fileURLToPath } from 'url';
+import { resolve as _resolve } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = _resolve(__filename, '..');
+export default {
+  entry: './src/background.mjs',
+  output: {
+    filename: 'bundle.mjs',
+    path: _resolve(__dirname, 'dist'),
+  },
+  resolve: {
+    fallback: {
+      fs: false, // Disable 'fs' module, common in Node.js packages
+    },
+  },
+};```
+
+this is my background.mjs file code :
+
+```
+import ytdl from "ytdl-core";
+console.log(ytdl);
+```
+
+i am doing something wrong?

@@ -4,19 +4,37 @@
     "manifest_version": 3,
     "description": "Capybara Comments is a youtube video comments generator .",
     "icons": {
-        "16": "icons/extension-icon-16.png",
-        "48": "icons/extension-icon-48.png",
-        "128": "icons/extension-icon-128.png"
+        "16": "assets/icons/extension-icon-16.png",
+        "48": "assets/icons/extension-icon-48.png",
+        "128": "assets/icons/extension-icon-128.png"
     },
     "permissions": [
         "activeTab",
-        "storage"
+        "storage",
+        "tabs"
+    ],
+
+    "host_permissions": [
+        "http://localhost:5000/*"        
     ],
     "action": {
-        "default_popup": "popup/popup.html",
-        "default_icon": "icons/extension-icon-16.png"
+        "default_popup": "src/popup.html",
+        "default_icon": {
+            "16": "./assets/icons/extension-icon-16.png"
+        }
     },
     "background": {
-        "service_worker": "background.js"
-    }
+        "service_worker": "dist/bundle.js",
+        "type": "module"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.youtube.com/*"
+            ],
+            "js": [
+                "src/contentScript.js"
+            ]
+        }
+    ]
 }

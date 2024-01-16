@@ -1,0 +1,27 @@
+Every time i send request at 'generateAccessKey' it generates a larger token than before. why? Some additional information :My program using express.js mongo.js and jsonwebtoken.
+
+```export async function generateAccessKey(req, res) {
+    try {
+
+        if (!req.session) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user data Please login again." } }) }
+        if (!req.session.user._id) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user id Please login again." } }) }
+
+
+        const user = req.session.user;
+        const _id = user._id;
+
+        const accessKey = jwt.sign({user}, configs.ACCESS_KEY_SECRET);
+        let newUser = await userSchema.findById(_id);
+
+        newUser.accessKey = accessKey;
+        await newUser.save();
+
+        req.session.user = newUser;
+
+        return res.status(https_codes.SUCCESS).json({ success: true, data: { accessKey } });
+
+    } catch (error) {
+        console.error("error on creating access token: ", error);
+        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error from server on creating access token" } });
+    }
+}```
