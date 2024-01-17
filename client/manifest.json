@@ -24,7 +24,7 @@
         }
     },
     "background": {
-        "service_worker": "dist/bundle.js",
+        "service_worker": "src/background.js",
         "type": "module"
     },
     "content_scripts": [

@@ -53,7 +53,6 @@ if (accessKeyRemoveBtn) {
 
 
 async function verifyAccessToken(accessKey, callback) {
-    console.log('calling verifyAccessToken from client');
     const parameter = {
         method: 'POST',
         body: JSON.stringify({ accessKey }),
@@ -70,10 +69,11 @@ async function verifyAccessToken(accessKey, callback) {
         .catch(error => console.log('Error', error));
 }
 
+const getUrl = document.getElementById('getUrl')
 
-// getUrl.onclick = (e) => {
-//     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-//         var currentTab = tabs[0];
-//         console.log(currentTab.url);
-//     });
-// }
+getUrl.onclick = (e) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        var currentTab = tabs[0];
+        chrome.runtime.sendMessage({ generateTranscribe: true, url: currentTab.url});
+    });
+}
