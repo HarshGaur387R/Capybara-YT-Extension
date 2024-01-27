@@ -9,10 +9,9 @@ function showAndHide(ele1, ele2) {
 }
 
 
-chrome.storage.sync.get('accessToken', async function (result) {
-    console.log('On onstalled: ');
-    if (result.accessToken) {
-        await verifyAccessToken(result.accessToken, () => { showAndHide(authorizedContainer, formContainer) });
+chrome.storage.sync.get('accessKey', async function (result) {
+    if (result.accessKey) {
+        await verifyAccessKey(result.accessKey, () => { showAndHide(authorizedContainer, formContainer) });
     } else {
         showAndHide(formContainer, authorizedContainer)
     }
@@ -28,8 +27,8 @@ if (accessKeySubmitBtn) {
         e.preventDefault();
         if (accessKeyInput) {
             const value = accessKeyInput.value;
-            chrome.storage.sync.set({ accessToken: value }, async () => {
-                await verifyAccessToken(value, () => { showAndHide(authorizedContainer, formContainer) });
+            chrome.storage.sync.set({ accessKey: value }, async () => {
+                await verifyAccessKey(value, () => { showAndHide(authorizedContainer, formContainer) });
             });
         }
     }
@@ -39,9 +38,9 @@ const accessKeyRemoveBtn = document.getElementById('accessKeyRemoveBtn');
 
 if (accessKeyRemoveBtn) {
     accessKeyRemoveBtn.onclick = (e) => {
-        chrome.storage.sync.get('accessToken', function (result) {
-            if (result.accessToken) {
-                chrome.storage.sync.remove('accessToken', function () {
+        chrome.storage.sync.get('accessKey', function (result) {
+            if (result.accessKey) {
+                chrome.storage.sync.remove('accessKey', function () {
                     var error = chrome.runtime.lastError;
                     if (error) { console.error(error) }
                     showAndHide(formContainer, authorizedContainer)
@@ -52,7 +51,7 @@ if (accessKeyRemoveBtn) {
 }
 
 
-async function verifyAccessToken(accessKey, callback) {
+async function verifyAccessKey(accessKey, callback) {
     const parameter = {
         method: 'POST',
         body: JSON.stringify({ accessKey }),
@@ -67,13 +66,4 @@ async function verifyAccessToken(accessKey, callback) {
             if (response.success) { console.log('Success: ', response.success); callback(); return }
         })
         .catch(error => console.log('Error', error));
-}
-
-const getUrl = document.getElementById('getUrl')
-
-getUrl.onclick = (e) => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        var currentTab = tabs[0];
-        chrome.runtime.sendMessage({ generateTranscribe: true, url: currentTab.url});
-    });
 }
