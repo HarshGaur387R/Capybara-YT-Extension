@@ -1,14 +1,12 @@
 chrome.runtime.onMessage.addListener(
-    async function (request, sender, sendResponse) {
-        if (request.url.includes('youtube.com')) {
-            if (request.generateTranscribe) {
-                console.log(request.url);
-                await generateComments(request.url)
-            }
-        }
+    function(request, sender, sendResponse) {
+      if (request.message === "getURL") {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+          sendResponse({url: tabs[0].url});
+        });
+      }
+      // This line is necessary to make the sendResponse function work
+      return true;
     }
-)
-
-async function generateComments(url){
-    return ;
-}
+  );
+  

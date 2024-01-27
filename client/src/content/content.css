@@ -1,0 +1,181 @@
+.orange-color {
+    background-color: orange;
+}
+
+.cappy-download-buttons {
+    padding: 10px 15px 10px 15px;
+    font-family: "Roboto", "Arial", sans-serif;
+    border-radius: 30px;
+    font-size: medium;
+    font-weight: 600;
+    color: black;
+    background-color: orange;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+.cappy-download-buttons:active {
+    color: white;
+    background-color: black;
+    border: 2px solid orange;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: row;
+    padding: 10px 0px 0px 0px;
+    gap: 15px;
+}
+
+.filter-window-options-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    margin: auto;
+}
+
+.radio-button-container {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+}
+
+.filter-window-button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.filter-window-button{
+    width: 100%;
+    padding: 10px;
+    background-color: orange;
+    border-top: 2px solid rgb(255, 197, 89);
+    border-right: 2px solid rgb(255, 197, 89);
+    border-bottom: 2px solid rgb(200, 130, 0);
+    border-left: 2px solid rgb(200, 130, 0);
+    font-size: medium;
+    font-weight: 700;
+    color: black;
+}
+
+.show-window {
+    display: block;
+}
+
+.hide-window {
+    display: none;
+}
+
+.window-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    background-color: white;
+    width: 400px;
+    border: 3px solid black;
+    box-shadow: 0px 0px 0px 5px orange;
+}
+
+.container {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    font-size: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.BtnContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btnsHolder {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 10px;
+    border: 2px solid orange;
+    height: 100px;
+    padding: 10px;
+}
+
+.flex-direction{
+    flex-direction: column !important;
+}
+
+.radio-options{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    flex: 70%;
+}
+
+.anotherContainer {
+    width: calc(100% - 20px);
+    text-align: start;
+}
+
+.operationsBtnContainer{
+    padding-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+}
+
+.operationBtn{
+    width: 100%;
+    padding: 10px 10px 10px 10px ;
+    font-weight: 700;
+    font-size: medium;
+    background-color: orange;
+    border: 2px solid rgb(255, 238, 164);
+    color: black;
+}
+
+.operationBtn:hover{
+    background-color: rgb(218, 141, 0);
+    cursor: pointer;
+}
+
+.operationBtn:active{
+    background-color: black;
+    color: orange;
+}
+
+.formats{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.quality{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.optionLabel{
+    font-size: large;
+}
+
+.input-label{
+    font-size: medium;
+}
