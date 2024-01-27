@@ -2,6 +2,7 @@ import express from 'express';
 import { connectToDatabase } from './db.mjs';
 import authRoute from './routes/auth.mjs';
 import userRoute from './routes/user.mjs'
+import extensionRoute from './routes/extension.mjs'
 import configs from './config/config.mjs';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
@@ -57,6 +58,7 @@ function startServer() {
 
     app.use('/api/v1/auth', authRoute);
     app.use('/api/v1/user', userRoute);
+    app.use('/api/v1/extension', extensionRoute);
 }
 
 app.listen(port, () => {
