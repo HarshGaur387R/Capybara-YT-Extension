@@ -52,6 +52,6 @@ export async function getAudio(req, res) {
         }
     } catch (error) {
         console.error("error on downloading audio: ", error);
-        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error from server on downloading video" } });
+        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error from server on downloading audio" } });
     }
 }

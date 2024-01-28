@@ -110,10 +110,10 @@ setTimeout(() => {
                 const videoFormat = document.querySelector('input[name="videoFormat"]:checked')?.value;
 
                 if ((media && media === 'video') && quality && videoFormat) {
-                    getVideo({ videoFormat, quality });
+                    getVideo({ videoFormat, quality },accessKey);
                 }
                 else if ((media && media === 'audio') && audioFormat) {
-                    getAudio({ audioFormat });
+                    getAudio({ audioFormat },accessKey);
                 }
             }
 
@@ -125,14 +125,26 @@ setTimeout(() => {
 }, 3000)
 
 
-async function getVideo(data) {
+async function getVideo(data, accessKey) {
 
     try {
         chrome.runtime.sendMessage({ message: "getURL" }, function (response) {
 
             const tabUrl = response.url;
 
-            fetch(`http://localhost:5000/api/v1/extension/downloadVideo?format=${data.videoFormat}&quality=${data.quality}&url=${tabUrl}`)
+            let headersList = {
+                "Content-Type": "application/json"
+            }
+            let bodyContent = JSON.stringify({
+                accessKey: accessKey
+            });
+
+            fetch(`http://localhost:5000/api/v1/extension/downloadVideo?format=${data.videoFormat}&quality=${data.quality}&url=${tabUrl}`,
+                {
+                    method: "POST",
+                    body: bodyContent,
+                    headers: headersList
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -164,14 +176,26 @@ async function getVideo(data) {
 }
 
 
-async function getAudio(data) {
+async function getAudio(data, accessKey) {
 
     try {
         chrome.runtime.sendMessage({ message: "getURL" }, function (response) {
 
             const tabUrl = response.url;
 
-            fetch(`http://localhost:5000/api/v1/extension/downloadAudio?format=${data.audioFormat}&url=${tabUrl}`)
+            let headersList = {
+                "Content-Type": "application/json"
+            }
+            let bodyContent = JSON.stringify({
+                accessKey: accessKey
+            });
+
+            fetch(`http://localhost:5000/api/v1/extension/downloadAudio?format=${data.audioFormat}&url=${tabUrl}`,
+                {
+                    method: "POST",
+                    body: bodyContent,
+                    headers: headersList
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -200,7 +224,3 @@ async function getAudio(data) {
         console.log(error);
     }
 }
-
-
-
-
