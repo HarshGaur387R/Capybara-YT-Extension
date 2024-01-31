@@ -48,13 +48,17 @@ app.use(session({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+
+// Using Static folder - 
+app.use(express.static(path.join(__dirname, '.', '/static')));
+
 function startServer() {
 
-    app.get('/', allowOnlyUnverified, (req, res) => {  res.send("Welcome to intro") });
-    app.get('/home', allowOnlyVerifiedUsers, (req, res) => {res.send('welcome to home') })
+    app.get('/', allowOnlyUnverified, (req, res) => {  res.render("intro") });
+    app.get('/home', allowOnlyVerifiedUsers, (req, res) => {res.render('home') })
 
-    app.get('/login', allowOnlyUnverified, (req, res) => { res.send("welcome to login") });
-    app.get('/signup', allowOnlyUnverified, (req, res) => { res.send("welcome to signup") });
+    app.get('/login', allowOnlyUnverified, (req, res) => { res.render("login") });
+    app.get('/signup', allowOnlyUnverified, (req, res) => { res.render("signup") });
 
     app.use('/api/v1/auth', authRoute);
     app.use('/api/v1/user', userRoute);
