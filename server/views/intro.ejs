@@ -9,6 +9,10 @@
     <meta name="description" content="Capybara Downloader - Download youtube videos and audios and etc." />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="favicon_io/site.webmanifest">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap');
@@ -53,8 +57,8 @@
             padding: 10px;
         }
 
-        .authBtn a:hover{
-           
+        .authBtn a:hover {
+
             color: white;
         }
 
@@ -122,8 +126,9 @@
             box-shadow: 5px 5px 0px 1px #EC9C00;
             font-family: 'Jua';
         }
-        .sec-text-btn button:active{
-            transform:translateY(10px) translateX(10px);
+
+        .sec-text-btn button:active {
+            transform: translateY(10px) translateX(10px);
             box-shadow: 0px 0px 0px 0px #EC9C00;
         }
 
@@ -209,7 +214,7 @@
             word-wrap: break-word;
             overflow: hidden;
         }
-        
+
         .news-latter-form-btn::after {
             display: flex;
             align-items: center;
@@ -232,8 +237,8 @@
             overflow: hidden;
         }
 
-        .news-latter-form-btn:active{
-            transform:translateY(10px) translateX(10px);
+        .news-latter-form-btn:active {
+            transform: translateY(10px) translateX(10px);
             box-shadow: 0px 0px 0px 0px black;
         }
 
@@ -434,12 +439,12 @@
             })
 
             if (window.PointerEvent) {
-                
+
                 news_latter_form_btn.addEventListener('pointerdown', (e) => {
-                    
+
                     news_latter_form_btn.style.color = 'orange'
                 })
-                
+
                 news_latter_form_btn.addEventListener('pointerup', (e) => {
                     console.log('lol');
                     news_latter_form_btn.style.color = 'black'
@@ -448,6 +453,21 @@
 
         }
 
+        const signup_btn = document.getElementById('signup-btn');
+        if (signup_btn) {
+            signup_btn.addEventListener('click', (e)=>{
+                window.location.href = "/signup";
+            });
+        }
+        
+
+        const about_btn = document.getElementById('about-btn');
+        if (about_btn) {
+            about_btn.addEventListener('click', (e)=>{
+                window.location.href = '/about';
+            })
+        }
+        
     </script>
 </body>
 
