@@ -60,6 +60,9 @@ function startServer() {
     app.get('/login', allowOnlyUnverified, (req, res) => { res.render("login") });
     app.get('/signup', allowOnlyUnverified, (req, res) => { res.render("signup") });
 
+    app.get('/verifyEmail', (req, res)=>{ res.render('signUpEmailVerificationScreen')});
+    app.get('/forgetPassword', (req, res)=>{ res.render('forgetPasswordScreen')});
+
     app.use('/api/v1/auth', authRoute);
     app.use('/api/v1/user', userRoute);
     app.use('/api/v1/extension', extensionRoute);
