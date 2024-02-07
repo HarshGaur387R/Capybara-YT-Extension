@@ -66,6 +66,7 @@ export async function changePassword(req, res) {
         const { verificationCode, token } = generateVerificationCode(6);
         req.session.token = token;
         req.session.newPassword = passwordHash;
+        req.session.permissionForEVS = true;
 
         const result = await sendEmailVerificationCode(userEmail, verificationCode);
         if (!result) return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Failed To Send Email" } });

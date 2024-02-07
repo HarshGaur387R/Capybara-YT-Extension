@@ -16,6 +16,8 @@ export async function changePassword2(req, res) {
         req.session.user = user;
 
         delete req.session.newPassword;
+        delete req.session.permissionForEVS;
+        
         return res.status(https_codes.SUCCESS).json({ success: true, meg: "User's password updated successfully" });
 
     } catch (error) {

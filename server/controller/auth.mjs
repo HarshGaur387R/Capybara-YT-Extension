@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 import { sendEmailVerificationCode } from '../module/EmailVerification.mjs';
 import generateVerificationCode from '../module/generateVerificationCode.mjs'
 import jsonwebtoken from 'jsonwebtoken'
+import NewsLatterSubs from '../models/NewsLatterSubs.mjs';
 
 const jwt = jsonwebtoken;
 
@@ -27,6 +28,7 @@ export async function signupController(req, res) {
         const result = await sendEmailVerificationCode(req.body.email, verificationCode);
         if (!result) return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Failed To Send Email" } });
 
+        req.session.permissionForEVS = true
         return res.status(https_codes.SUCCESS).json({ success: true, msg: "Verify email to continue" });
 
     } catch (error) {
@@ -35,8 +37,30 @@ export async function signupController(req, res) {
     }
 }
 
-// READ Operation for User
 
+// WRITE Operation for User (signup is required)
+export async function resendCode(req, res) {
+    try {
+        if (!req.session) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user data Please signup again." } }) }
+        if (!req.session.user) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user data Please signup again." } }) }
+        if (!req.session.user.email) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on gathering user data Please signup again." } }) }
+
+        const { verificationCode, token } = generateVerificationCode(6);
+        req.session.token = token;
+
+        const result = await sendEmailVerificationCode(req.session.user.email, verificationCode);
+        if (!result) return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Failed To Send Email" } });
+
+        return res.status(https_codes.SUCCESS).json({ success: true, msg: "Code is re-sended to user's email" });
+
+    } catch (error) {
+        console.error('error on resending code: ', error);
+        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Error from server on resending code" } });
+    }
+}
+
+
+// READ Operation for User
 export async function loginController(req, res) {
 
     try {
@@ -91,6 +115,7 @@ export async function forgetPassword(req, res) {
         req.session.token = token;
         req.session.newPassword = passwordHash;
         req.session.email = userEmail
+        req.session.permissionForFPEVS = true;
 
         const result = await sendEmailVerificationCode(userEmail, verificationCode);
         if (!result) return res.status(https_codes.SERVER_ERROR).json({ success: false, error: { msg: "Failed To Send Email" } });
@@ -121,5 +146,24 @@ export async function verifyAccessKey(req, res) {
     } catch (error) {
         console.error('error on verifying accessToken: ', error);
         return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "Error from server on verifying AccessToken" });
+    }
+}
+
+// WRITE Operation for user (no login and signup required);
+
+export async function SubscribeNewsLatter(req, res) {
+    try {
+        if (!req.body.email) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Please provide valid email" } }) }
+
+        const subscriber = await NewsLatterSubs.findOne({ 'email': req.body.email });
+        if (subscriber) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Already Subscribed" } }) };
+
+        const sub = await NewsLatterSubs.create({email:req.body.email});
+        if (!sub) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Error on subscribing, Please try again." } }) };
+
+        return res.status(https_codes.SUCCESS).json({ success: true, msg: "Thank you for subscribing" });
+    } catch (error) {
+        console.error('error on subscribing news latter: ', error);
+        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "Error from server on Subscribing" });
     }
 }

@@ -12,6 +12,7 @@ import path from 'path';
 import { allowOnlyVerifiedUsers } from './middleware/allowOnlyVerifiedUsers.mjs';
 import { allowOnlyUnverified } from './middleware/allowOnlyUnverified.mjs';
 import { verify_csrf_token, generate_csrf_token } from './middleware/csrfToken.mjs';
+import { checkPermission } from './middleware/checkPermissions.mjs';
 
 const app = express();
 const port = 5000;
@@ -54,14 +55,15 @@ app.use(express.static(path.join(__dirname, '.', '/static')));
 
 function startServer() {
 
-    app.get('/', allowOnlyUnverified, (req, res) => {  res.render("intro") });
-    app.get('/home', allowOnlyVerifiedUsers, (req, res) => {res.render('home') })
+    app.get('/', allowOnlyUnverified, (req, res, next) => { delete req.session.permissionForFPEVS; delete req.session.permissionForEVS; next()}, (req, res) => { res.render("intro") });
+    app.get('/home', allowOnlyVerifiedUsers, (req, res, next) => { delete req.session.permissionForFPEVS; delete req.session.permissionForEVS; next();}, (req, res) => { res.render('home') })
 
     app.get('/login', allowOnlyUnverified, (req, res) => { res.render("login") });
     app.get('/signup', allowOnlyUnverified, (req, res) => { res.render("signup") });
+    app.get('/verifyEmail', checkPermission('permissionForEVS'), (req, res) => { res.render('signUpEmailVerificationScreen') });
 
-    app.get('/verifyEmail', (req, res)=>{ res.render('signUpEmailVerificationScreen')});
-    app.get('/forgetPassword', (req, res)=>{ res.render('forgetPasswordScreen')});
+    app.get('/forgetPassword', allowOnlyUnverified ,(req, res) => { res.render('forgetPasswordScreen') });
+    app.get('/verifyEmailToForgetPassword', checkPermission('permissionForFPEVS'), (req, res) => { res.render('forgetPasswordVerifyEmail') })
 
     app.use('/api/v1/auth', authRoute);
     app.use('/api/v1/user', userRoute);

@@ -19,7 +19,8 @@ export async function forgetPassword2(req, res) {
  
         delete req.session.newPassword;
         delete req.session.email;
- 
+        delete req.session.permissionForFPEVS;
+
         return res.status(https_codes.SUCCESS).json({ success: true, msg: "Password changed successfully" });
 
     } catch (error) {
