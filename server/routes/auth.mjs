@@ -1,11 +1,12 @@
 import express from 'express';
-import { SubscribeNewsLatter, forgetPassword, loginController, resendCode, signOutUser, signupController, verifyAccessKey } from '../controller/auth.mjs';
+import { SubscribeNewsLatter, forgetPassword, loginController, resendCode, signupController, verifyAccessKey } from '../controller/auth.mjs';
 import { body, validationResult } from 'express-validator';
 import https_codes from '../config/http_code.mjs';
 import { verifyEmailVerificationCode } from '../module/EmailVerification.mjs';
 import { createUser } from '../module/createUser.mjs';
 import { changePassword2 } from '../module/changePassword.mjs';
 import { forgetPassword2 } from '../module/forgetPassword.mjs';
+import rateLimiter from '../middleware/rateLimiter.mjs'
 
 const authRoute = express.Router();
 
@@ -46,9 +47,6 @@ authRoute.post('/verifyEmail', [
 }, await verifyEmailVerificationCode(createUser));
 
 
-// ROUTE 4 : signout user
-authRoute.post('/signout', signOutUser);
-
 
 // ROUTE 5 : forget password
 authRoute.put('/forgetPassword', [
@@ -75,7 +73,7 @@ authRoute.post('/verifyEmailToChangePassword', [
 }, await verifyEmailVerificationCode(forgetPassword2));
 
 // ROUTE 7 : Resend Email verification code
-authRoute.post('/resendCode', resendCode)
+authRoute.post('/resendCode', rateLimiter(10, 30000, 'Please wait for 30 seconds to complete'), resendCode)
 
 // ROUTE 8 : Verify user's accessKey
 authRoute.post('/verifyAccessKey', [
@@ -89,7 +87,7 @@ authRoute.post('/verifyAccessKey', [
 }, verifyAccessKey);
 
 // ROUTE 9 : Subscribe to news latter
-authRoute.post('/subscribeToNewsLatter', [
+authRoute.post('/subscribeToNewsLatter', rateLimiter(10, 60 * 1000, 'Too many request. Please wait before sending new request.' ) ,[
     body("email", 'Enter a valid email').isEmail(),
 ], (req, res, next) => {
     const errors = validationResult(req);
@@ -97,6 +95,6 @@ authRoute.post('/subscribeToNewsLatter', [
         return res.status(https_codes.BAD_REQUEST).json({ error: errors.array() });
     }
     next();
-}, SubscribeNewsLatter);
+},SubscribeNewsLatter);
 
 export default authRoute;

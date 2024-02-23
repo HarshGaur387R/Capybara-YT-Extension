@@ -25,10 +25,20 @@ const UserSchema = new Schema({
         type: String,
         unique: true
     },
+    total_number_of_succeed_requests:{
+        type: Number,
+        default: 0
+    },
+    requestsRecord: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'RequestsRecord'
+        }
+    ],
     date: {
         type: Date,
         default: Date.now
     }
-});
+}, {timestamps: true});
 
-export default mongoose.model('user', UserSchema);
+export default mongoose.model('User', UserSchema);

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CapybaraComments - Profile</title>
+    <title>CapybaraComments - Contact</title>
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Capybara Downloader - Download youtube videos and audios and etc." />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -156,71 +156,54 @@
             height: 100%;
             background-color: transparent;
             font-family: Jua;
-            gap: 20px;
+            gap: 30px;
         }
 
-        .profile-container {
-            width: 800px;
-            height: 100%;
-            background-color: #1A1A1A;
-            color: white;
-        }
-
-        .inputs-container {
-            width: 400px;
-            gap: 20px;
-        }
-
-        .input-container {
-            width: 100%;
+        section .contact-tag {
+            background-color: orange;
+            padding: 5px;
+            width: 100px;
+            color: black;
+            font-size: large;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
         }
 
-        .input-container label {
-            width: 100%;
-            padding-bottom: 10px;
-        }
-
-        .input-container input {
-            color: white;
-            font-size: large;
-            width: 100%;
+        section .image-container {
+            width: 50px;
+            background-color: white;
+            border-radius: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 10px;
-            background-color: #474747;
-            border: none;
         }
 
-        .input-container a {
+        section img {
             width: 100%;
-            font-size: small;
-            text-align: end;
         }
 
-        #save-btn {
-            background-color: orange;
-            border: 3px solid black;
-            padding: 5px;
-            width: 300px;
-            font-size: x-large;
+        section .contact-tag-container {
+            width: 500px;
+            flex-wrap: wrap;
+            gap: 15px;
+            /* background-color: red; */
+            justify-content: space-around;
+        }
+
+        section a {
             color: black;
-            box-shadow: 5px 5px 0px 0px orange;
+            font-size: x-large;
+        }
+
+        section .contact-tag {
+            width: 250px;
+            display: flex;
+            justify-content: start;
+            align-items: center;
             border-radius: 30px;
-
-        }
-
-        #save-btn:hover {
-            background-color: rgb(223, 147, 5);
-            box-shadow: 5px 5px 0px 0px rgb(223, 147, 5);
-        }
-
-
-        #save-btn:active {
-            background-color: rgb(223, 147, 5);
-            box-shadow: none;
-            transform: translateX(5px) translateY(5px);
+            gap: 10px;
         }
     </style>
 </head>
@@ -237,32 +220,41 @@
                 <li><a href="/contact">Contact</a></li>
             </ul>
             <div class="logout-btn d-flex justify-content-center align-items-center pb-5">
-                <button id="logout_btn" type="button">Logout</button>
+                <button type="button">Logout</button>
                 <span class="material-symbols-outlined">move_item</span>
             </div>
         </nav>
-        <section class="d-flex justify-content-center align-items-center flex-column">
-            <div class="profile-container d-flex justify-content-center align-items-center">
-                <div class="inputs-container d-flex align-items-center justify-content-center flex-column">
-                    <div class="input-container pb-3">
-                        <label for="name-input">Name :</label>
-                        <input type="text" name="name-input" id="name-input">
+        <section class="d-flex justify-content-center align-items-center flex-row">
+            <div class="contact-tag-container d-flex align-items-center ">
+                <div class="contact-tag">
+                    <div class="image-container">
+                        <img src="../icons/github.svg" alt="github-icon">
                     </div>
-
-                    <div class="input-container">
-                        <label for="email-input">Email :</label>
-                        <input type="email" name="email-input" id="email-input">
-                        <a href="/changeEmail">Change Email?</a>
-
+                    <a href="/github">Github</a>
+                </div>
+                <div class="contact-tag">
+                    <div class="image-container">
+                        <img src="../icons/facebook.svg" alt="facebook-icon">
                     </div>
-
-                    <div class="input-container pb-3">
-                        <label for="password-input">Password :</label>
-                        <input type="password" name="Password" id="password-input">
-                        <a href="/changePassword">Change Password?</a>
+                    <a href="/facebook">Facebook</a>
+                </div>
+                <div class="contact-tag">
+                    <div class="image-container">
+                        <img src="../icons/envelope-regular.svg" alt="gmail-logo">
                     </div>
-
-                    <button id="save-btn" type="button">Save</button>
+                    <a href="/gmail">Gmail</a>
+                </div>
+                <div class="contact-tag">
+                    <div class="image-container">
+                        <img src="../icons/linkedin-in.svg" alt="linkedin">
+                    </div>
+                    <a href="linkedin">Linkedin</a>
+                </div>
+                <div class="contact-tag">
+                    <div class="image-container">
+                        <img src="../icons/instagram.svg" alt="instagram">
+                    </div>
+                    <a href="instagram">Instagram</a>
                 </div>
             </div>
         </section>
@@ -279,17 +271,16 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-        </script>
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 
     <script>
 
         const hostURL = 'http://localhost:5000'
 
         const input = document.querySelector('.capy-input-container input');
-        const save_btn = document.getElementById('save-btn');
+        const generate_btn = document.getElementById('generate-btn');
         const copy_btn = document.querySelector('.copy-btn');
-
 
         if (copy_btn) {
             copy_btn.onclick = (e) => {
@@ -312,40 +303,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', addColorClassToAnchor);
-        document.addEventListener('DOMContentLoaded', get_my_data);
 
-        async function get_my_data() {
-            const name_input = document.getElementById('name-input');
-            const email_input = document.getElementById('email-input');
-            const password_input = document.getElementById('password-input');
-
-            try {
-                await fetch(`${hostURL}/api/v1/user/my-data`)
-                    .then((res) => res.json())
-                    .then((res) => {
-                        if (res.error) {
-                            if (res.error.constructor === Array) {
-                                show_message_pop(true, res.error[0].msg);
-                                return;
-                            } else {
-                                show_message_pop(true, res.error.msg);
-                                return;
-                            }
-                        }
-                        name_input.value = res.data.name;
-                        email_input.value = res.data.email;
-                        password_input.value = res.data.password;
-                    })
-                    .catch((error) => {
-                        show_message_pop(true, "Error on reading response from server.");
-                    })
-            } catch (error) {
-                show_message_pop(
-                    true,
-                    "Error on sending request to get user detail."
-                );
-            }
-        }
 
         const message_pop = document.querySelector('.message-pop');
         const cross_btn = document.querySelector('.cross-btn');
@@ -367,55 +325,45 @@
             }
         }
 
-
-        async function change_name() {
-            const name = document.getElementById('name-input').value;
+        async function getAccessKey() {
             try {
                 const parameter = {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name: name
-                    })
-                };
+                    }
+                }
 
-                await fetch(`${hostURL}/api/v1/user/updateUserName`, parameter)
+                await fetch(`${hostURL}/api/v1/user/generateAccessKey`, parameter)
                     .then((res) => res.json())
                     .then((res) => {
+                        console.log(res);
                         if (res.error) {
                             if (res.error.constructor === Array) {
                                 show_message_pop(true, res.error[0].msg);
                                 return;
-                            } else {
+                            }
+                            else {
                                 show_message_pop(true, res.error.msg);
                                 return;
                             }
                         }
-                        const message_head = document.querySelector(".head");
-                        if (message_head) {
-                            message_head.textContent = "Successful!";
-                        }
-                        show_message_pop(true, "Name Updated Successfully!");
-                        document.getElementById('name-input').value = name;
-                    })
-                    .catch((error) => {
-                        show_message_pop(true, "Error on reading response from server.");
-                    })
-                    .finally((e) => {
-                        save_btn.disabled = false;
-                    });
-            } catch (error) {
-                show_message_pop(
-                    true,
-                    "Error on sending request to update name."
-                );
-            }
-        }
 
-        save_btn.onclick = async (e) => {
-            await change_name();
+                        const message_head = document.querySelector('.head');
+                        if (message_head) {
+                            message_head.textContent = 'AccessKey!';
+                        }
+                        show_message_pop(true, res.data.accessKey);
+
+                    }).catch((error) => {
+                        show_message_pop(true, 'Error on reading response from server.');
+                        console.log('generate accesskey Latter:', error);
+                    })
+
+            } catch (error) {
+                show_message_pop(true, 'Error on sending request for News Latter.');
+                console.log('generating accesskey:', error);
+            }
         }
 
         // Logout-btn

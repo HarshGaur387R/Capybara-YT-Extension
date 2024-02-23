@@ -1,5 +1,5 @@
 import express from 'express';
-import { changePassword, generateAccessKey, myData, updateEmail, updateUserName } from '../controller/user.mjs';
+import { changePassword, generateAccessKey, getCurrentAccessKey, getRequestRecordData, getTotalRequests, myData, updateEmail, updateUserName } from '../controller/user.mjs';
 import { body, validationResult } from 'express-validator';
 import https_codes from '../config/http_code.mjs';
 import { passValidUser } from '../middleware/passValidUser.mjs';
@@ -7,6 +7,7 @@ import { verify_csrf_token } from '../middleware/csrfToken.mjs';
 import { verifyEmailVerificationCode } from '../module/EmailVerification.mjs';
 import { updateEmail2 } from '../module/updateEmail.mjs';
 import { changePassword2 } from '../module/changePassword.mjs';
+import { signOutUser } from '../controller/auth.mjs';
 
 const userRoute = express.Router();
 
@@ -45,7 +46,18 @@ userRoute.post('/verifyEmailToUpdatePassword', passValidUser, await verifyEmailV
 userRoute.put("/updateUserName", passValidUser , updateUserName);
 
 // ROUTE 7: Update or generate
-userRoute.put('/generateAccessKey', passValidUser, generateAccessKey)
+userRoute.put('/generateAccessKey', passValidUser, generateAccessKey);
 
-// userRoute.post('/')
+// ROUTE 8: Read current Access Key
+userRoute.get('/getAccessKey', passValidUser, getCurrentAccessKey);
+
+// ROUTE 9: Read request records number
+userRoute.get('/getTotalRequestsRecord', passValidUser, getTotalRequests);
+
+// ROUTE 10 : Read request data
+userRoute.get('/getRequestsRecordData', passValidUser, getRequestRecordData);
+
+// ROUTE 11 : signout user
+userRoute.post('/signout', passValidUser, signOutUser);
+
 export default userRoute;

@@ -13,4 +13,4 @@ const NewsLatterSubsSchema = new Schema({
     }
 });
 
-export default mongoose.model('newsLatterSubs', NewsLatterSubsSchema);
+export default mongoose.model('NewsLatterSub', NewsLatterSubsSchema);

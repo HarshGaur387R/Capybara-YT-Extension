@@ -13,6 +13,7 @@ import { allowOnlyVerifiedUsers } from './middleware/allowOnlyVerifiedUsers.mjs'
 import { allowOnlyUnverified } from './middleware/allowOnlyUnverified.mjs';
 import { verify_csrf_token, generate_csrf_token } from './middleware/csrfToken.mjs';
 import { checkPermission } from './middleware/checkPermissions.mjs';
+import handleError from './middleware/errorHandling.mjs';
 
 const app = express();
 const port = 5000;
@@ -42,6 +43,7 @@ app.use(session({
     saveUninitialized: false,
     store: store,
     cookie: { secure: false, httpOnly: true, maxAge: 24 * 3600 * 1000 }, // Set 'secure: true' if using HTTPS
+    rolling: true
 }));
 
 
@@ -54,24 +56,82 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '.', '/static')));
 
 function startServer() {
+    const clearSessionPermissions = (req, res, next) => {
+        delete req.session.permissionForFPEVS;
+        delete req.session.permissionForEVS;
+        next();
+    };
 
-    app.get('/', allowOnlyUnverified, (req, res, next) => { delete req.session.permissionForFPEVS; delete req.session.permissionForEVS; next()}, (req, res) => { res.render("intro") });
-    app.get('/home', allowOnlyVerifiedUsers, (req, res, next) => { delete req.session.permissionForFPEVS; delete req.session.permissionForEVS; next();}, (req, res) => { res.render('home') })
 
-    app.get('/login', allowOnlyUnverified, (req, res) => { res.render("login") });
-    app.get('/signup', allowOnlyUnverified, (req, res) => { res.render("signup") });
-    app.get('/verifyEmail', checkPermission('permissionForEVS'), (req, res) => { res.render('signUpEmailVerificationScreen') });
+    // Routes -
+    app.get('/', allowOnlyUnverified, clearSessionPermissions, (req, res) => {
+        res.render("intro");
+    });
 
-    app.get('/forgetPassword', allowOnlyUnverified ,(req, res) => { res.render('forgetPasswordScreen') });
-    app.get('/verifyEmailToForgetPassword', checkPermission('permissionForFPEVS'), (req, res) => { res.render('forgetPasswordVerifyEmail') })
+    app.get('/home', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
+        res.render('home');
+    });
 
+    app.get('/profile', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
+        res.render('profile');
+    });
+
+    app.get('/changeEmail', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res)=>{
+        res.render('changeEmailForUser');
+    })
+
+    app.get('/changePassword', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res)=>{
+        res.render('changePasswordForUser');
+    })
+
+    app.get('/dashboard', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
+        res.render('dashboard');
+    });
+
+    app.get('/contact', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
+        res.render('contact');
+    });
+
+    app.get('/login', allowOnlyUnverified, (req, res) => {
+        res.render("login");
+    });
+
+    app.get('/signup', allowOnlyUnverified, (req, res) => {
+        res.render("signup");
+    });
+
+    app.get('/verifyEmail', checkPermission('permissionForEVS'), (req, res) => {
+        res.render('signUpEmailVerificationScreen');
+    });
+
+    app.get('/forgetPassword', allowOnlyUnverified ,(req, res) => {
+        res.render('forgetPasswordScreen');
+    });
+
+    app.get('/verifyEmailToForgetPassword', checkPermission('permissionForFPEVS'), (req, res) => {
+        res.render('forgetPasswordVerifyEmail');
+    });
+
+
+    // Apis -
     app.use('/api/v1/auth', authRoute);
     app.use('/api/v1/user', userRoute);
     app.use('/api/v1/extension', extensionRoute);
+
+
+    // error handling middleware
+    app.use(handleError);
 }
 
 app.listen(port, () => {
     console.log(`server listing at http://localhost:${port}`);
-})
+});
 
 startServer();
+
+
+
+// TODO :
+
+// 1) Create Dashboard.ejs
+// 2) Make Dashboard.ejs functional

@@ -16,10 +16,13 @@ export async function checkAccessKey(req, res, next) {
        const id = jwt.verify(accessKey,configs.ACCESS_KEY_SECRET)._id;
 
        if (!id) return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Incorrect token is provided" } });
-       
+
        const user = await userSchema.findById(id);
        if (!user) { return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Invalid accessKey. No user authorized with this key" } }) };
+
        if (user.accessKey !== accessKey) return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Invalid accessKey. This key is not authorized to any user" } });
+
+       req.session.user_id = id;
         next();
 
     } catch (error) {

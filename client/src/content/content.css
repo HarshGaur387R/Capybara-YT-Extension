@@ -45,13 +45,13 @@
     flex-direction: column;
 }
 
-.filter-window-button-container{
+.filter-window-button-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.filter-window-button{
+.filter-window-button {
     width: 100%;
     padding: 10px;
     background-color: orange;
@@ -73,6 +73,7 @@
 }
 
 .window-container {
+    position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,6 +83,31 @@
     width: 400px;
     border: 3px solid black;
     box-shadow: 0px 0px 0px 5px orange;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    margin: auto;
+}
+
+.second-window-container {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    background-color: white;
+    width: 400px;
+    border: 3px solid black;
+    box-shadow: 0px 0px 0px 5px orange;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    margin: auto;
 }
 
 .container {
@@ -111,11 +137,11 @@
     padding: 10px;
 }
 
-.flex-direction{
+.flex-direction {
     flex-direction: column !important;
 }
 
-.radio-options{
+.radio-options {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -130,7 +156,7 @@
     text-align: start;
 }
 
-.operationsBtnContainer{
+.operationsBtnContainer {
     padding-top: 10px;
     display: flex;
     justify-content: center;
@@ -139,9 +165,9 @@
     gap: 5px;
 }
 
-.operationBtn{
+.operationBtn {
     width: 100%;
-    padding: 10px 10px 10px 10px ;
+    padding: 10px 10px 10px 10px;
     font-weight: 700;
     font-size: medium;
     background-color: orange;
@@ -149,33 +175,58 @@
     color: black;
 }
 
-.operationBtn:hover{
+.operationBtn:hover {
     background-color: rgb(218, 141, 0);
     cursor: pointer;
 }
 
-.operationBtn:active{
+.operationBtn:active {
     background-color: black;
     color: orange;
 }
 
-.formats{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-.quality{
+.formats {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
 }
 
-.optionLabel{
+.quality {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.optionLabel {
     font-size: large;
 }
 
-.input-label{
+.input-label {
     font-size: medium;
+}
+
+.info-container{
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.info-section{
+    width:  calc(100% - 10px);
+    display:  flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.info-heading{
+    font-size: large;
+    color: orangered;
+}
+
+.dis-none{
+    display: none !important;
 }
