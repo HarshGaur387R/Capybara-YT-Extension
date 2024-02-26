@@ -26,6 +26,8 @@ export async function getVideo(req, res, next) {
             status: 'Pending',
             url: url,
             timestamp: new Date(),
+            deviceType: req.device.type.toUpperCase(),
+            OS_Name: getUserOS(req.headers['user-agent']),
             sender_token: req.body.accessKey, // Replace with actual session token
             sender_ip_address: req.ip,
             sender_user_agent: req.headers['user-agent']
@@ -83,6 +85,8 @@ export async function getAudio(req, res, next) {
             status: 'Pending',
             url: url,
             timestamp: new Date(),
+            deviceType: req.device.type.toUpperCase(),
+            OS_Name: getUserOS(req.headers['user-agent']),
             sender_token: req.body.accessKey, // Replace with actual session token
             sender_ip_address: req.ip,
             sender_user_agent: req.headers['user-agent']
@@ -103,7 +107,7 @@ export async function getAudio(req, res, next) {
             // Update the record status to 'Succeed'
             record.status = 'Succeed';
             user.total_number_of_succeed_requests += 1;
-            
+
             await user.save()
             await record.save();
 
@@ -146,5 +150,17 @@ export async function getInfo(req, res, next) {
     } catch (error) {
         console.error(error)
         next(new Error("Error from server on downloading audio"));
+    }
+}
+
+function getUserOS(userAgent) {
+    if (/Mac OS X/.test(userAgent)) {
+        return "macOS"
+    } else if (/Windows/.test(userAgent)) {
+        return "Windows"
+    } else if (/Linux/.test(userAgent)) {
+        return "Linux"
+    } else {
+        return "Unknown OS"
     }
 }

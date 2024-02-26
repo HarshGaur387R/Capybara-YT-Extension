@@ -156,6 +156,94 @@
         .dis-none {
             display: none;
         }
+
+        .loading-window {
+            position: fixed;
+            z-index: 100000;
+            background-color: #1E1E1E;
+            width: 100vw;
+            height: 100vh;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+            top: 0%;
+            left: 0%;
+        }
+
+        .loading-window-heading {
+            font-family: Jua;
+            color: orange;
+        }
+
+        .loading-window-img-container {
+            width: 400px;
+
+        }
+
+        .loading-window-img-container img {
+            width: 100%;
+        }
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            border: 3px solid;
+            border-color: #FFF #FFF transparent transparent;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        .loader::after,
+        .loader::before {
+            content: '';
+            box-sizing: border-box;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            border: 3px solid;
+            border-color: transparent transparent orange orange;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-sizing: border-box;
+            animation: rotationBack 0.5s linear infinite;
+            transform-origin: center center;
+        }
+
+        .loader::before {
+            width: 32px;
+            height: 32px;
+            border-color: #FFF #FFF transparent transparent;
+            animation: rotation 1.5s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotationBack {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
     </style>
 </head>
 
@@ -195,6 +283,16 @@
             <div class="message"></div>
         </div>
     </div>
+
+    <div class="loading-window dis-none">
+        <div class="loading-window-img-container">
+            <span class="loader"></span>
+        </div>
+        <div class="loading-window-heading">
+            <h1>Purr Purr Loading...</h1>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
         </script>
@@ -204,6 +302,17 @@
 
         const message_pop = document.querySelector('.message-pop');
         const cross_btn = document.querySelector('.cross-btn');
+
+        function show_loading_window(bool) {
+            const loading_window = document.querySelector('.loading-window');
+
+            if (bool) {
+                loading_window.classList.remove('dis-none');
+            }
+            else {
+                loading_window.classList.add('dis-none');
+            }
+        }
 
         function show_message_pop(bool, msg='') {
             if (bool) {
@@ -275,7 +384,10 @@
                     }).catch((error) => {
                         show_message_pop(true, 'Error on reading response from server.');
                         console.log('login:', error);
-                    });
+                    }).finally(()=>{
+                        show_loading_window(false);
+                    })
+                    ;
 
             } catch (error) {
                 show_message_pop(true, 'Error on sending request for login.');

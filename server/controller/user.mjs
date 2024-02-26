@@ -191,10 +191,35 @@ export async function getRequestRecordData(req, res, next) {
         }
 
         // Send the response
-        res.json({ data });
+        res.status(https_codes.SUCCESS).json({ data });
 
     } catch (error) {
         console.error("error on gathering requests record to struct date: ", error);
         next(new Error("Error from server on gathering requests record to struct data"));
+    }
+}
+
+export async function getAccessTokenUsers(req, res, next){
+    try {
+        const user_id = req.session.user._id;
+        const user = await User.findById(user_id).populate('requestsRecord');
+
+        if (!user) {
+            throw Object.assign(new Error("Error on gathering user information."), { statusCode: https_codes.BAD_REQUEST });
+        }
+        const data = new Map();
+
+        user.requestsRecord.forEach((record)=>{
+            const {deviceType, OS_Name} = record;
+            const deviceKey = `${deviceType}-${OS_Name}`;            
+            data.set(deviceKey, {deviceType, OS_Name});
+        });
+
+        const arrayData = Array.from(data.values());
+        res.status(https_codes.SUCCESS).json({success: true, data : arrayData});
+
+    } catch (error) {
+        console.error("error on gathering devices info ", error);
+        next(new Error("Error from server on gathering devices info."));
     }
 }

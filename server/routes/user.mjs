@@ -1,9 +1,8 @@
 import express from 'express';
-import { changePassword, generateAccessKey, getCurrentAccessKey, getRequestRecordData, getTotalRequests, myData, updateEmail, updateUserName } from '../controller/user.mjs';
+import { changePassword, generateAccessKey, getAccessTokenUsers, getCurrentAccessKey, getRequestRecordData, getTotalRequests, myData, updateEmail, updateUserName } from '../controller/user.mjs';
 import { body, validationResult } from 'express-validator';
 import https_codes from '../config/http_code.mjs';
 import { passValidUser } from '../middleware/passValidUser.mjs';
-import { verify_csrf_token } from '../middleware/csrfToken.mjs';
 import { verifyEmailVerificationCode } from '../module/EmailVerification.mjs';
 import { updateEmail2 } from '../module/updateEmail.mjs';
 import { changePassword2 } from '../module/changePassword.mjs';
@@ -57,7 +56,10 @@ userRoute.get('/getTotalRequestsRecord', passValidUser, getTotalRequests);
 // ROUTE 10 : Read request data
 userRoute.get('/getRequestsRecordData', passValidUser, getRequestRecordData);
 
-// ROUTE 11 : signout user
+// ROUTE 11 : Read access token users 
+userRoute.get('/getAccessTokenUsers', passValidUser, getAccessTokenUsers);
+
+// ROUTE 12 : signout user
 userRoute.post('/signout', passValidUser, signOutUser);
 
 export default userRoute;

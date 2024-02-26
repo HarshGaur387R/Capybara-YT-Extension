@@ -13,6 +13,7 @@ import { allowOnlyVerifiedUsers } from './middleware/allowOnlyVerifiedUsers.mjs'
 import { allowOnlyUnverified } from './middleware/allowOnlyUnverified.mjs';
 import { verify_csrf_token, generate_csrf_token } from './middleware/csrfToken.mjs';
 import { checkPermission } from './middleware/checkPermissions.mjs';
+import expressDevice from 'express-device';
 import handleError from './middleware/errorHandling.mjs';
 
 const app = express();
@@ -21,6 +22,7 @@ const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 app.use(cors())
 app.use(express.json());
+app.use(expressDevice.capture());
 
 await connectToDatabase();
 

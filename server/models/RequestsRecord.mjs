@@ -17,6 +17,8 @@ const RequestsRecord = new Schema({
     },
     url: String,
     timestamp: Date,
+    deviceType: String,
+    OS_Name: String,
     sender_token: String,
     sender_ip_address: String,
     sender_user_agent: String
