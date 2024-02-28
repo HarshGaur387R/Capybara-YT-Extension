@@ -33,7 +33,7 @@ export async function signupController(req, res, next) {
 
     } catch (error) {
         console.error(error);
-        next(new Error("Error from server on signup"))
+        next(new Error(`Error from server on signup: ${error.message}`))
     }
 }
 
@@ -76,7 +76,7 @@ export async function loginController(req, res, next) {
 
     } catch (error) {
         console.error(error);
-        next(new Error('Error from server on login'));
+        next(new Error(`Error from server on login: ${error.message}`));
     }
 }
 
@@ -89,7 +89,7 @@ export async function signOutUser(req, res, next) {
         return res.status(https_codes.SUCCESS).json({ success: true, msg: "SignOut successful" });
     } catch (error) {
         console.error(error);
-        next(new Error('Error from signout'));
+        next(new Error(`Error from signout: ${error.message}`));
     }
 }
 
@@ -120,7 +120,7 @@ export async function forgetPassword(req, res, next) {
 
     } catch (error) {
         console.error(error);
-        next(new Error("error on changing user's password: "))
+        next(new Error(`error on changing user's password: ${error.message}`))
     }
 }
 
@@ -139,7 +139,7 @@ export async function verifyAccessKey(req, res, next) {
         return res.status(https_codes.SUCCESS).json({ success: true, msg: "Authorized" });
     } catch (error) {
         console.error(error);
-        next(new Error('error on verifying accessToken: '));
+        next(new Error(`error on verifying accessToken: ${error.message}`));
     }
 }
 
@@ -158,6 +158,6 @@ export async function SubscribeNewsLatter(req, res, next) {
         return res.status(https_codes.SUCCESS).json({ success: true, msg: "Thank you for subscribing" });
     } catch (error) {
         console.error(error);
-        next(new Error('error on subscribing news latter: '));
+        next(new Error(`error on subscribing news latter: ${error.message}`));
     }
 }

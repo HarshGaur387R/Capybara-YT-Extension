@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
     <link rel="manifest" href="favicon_io/site.webmanifest">
-    <style>
+    <style nonce="<%= nonce %>">
         @import url('https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Jua&display=swap');
@@ -108,7 +108,7 @@
             position: fixed;
             z-index: 1000;
             background-color: orange;
-            width: 300px;
+            min-width: 300px;
             top: 0%;
             left: 50%;
             transform: translate(-50%, 10%);
@@ -300,7 +300,7 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
         </script>
 
-    <script>
+    <script nonce="<%= nonce %>">
         const hostURL = 'http://localhost:5000'
 
         const message_pop = document.querySelector('.message-pop');

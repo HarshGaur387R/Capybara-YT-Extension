@@ -16,7 +16,7 @@ export async function myData(req, res, next) {
 
     } catch (error) {
         console.error('error on creating myData', error);
-        next(new Error('Error from server on fetching my data'));
+        next(new Error(`Error from server on fetching my data: ${error.message}`));
     }
 }
 
@@ -45,7 +45,7 @@ export async function updateEmail(req, res, next) {
 
     } catch (error) {
         console.error('error on updating email user: ', error);
-        next(new Error("Error from server on updating user's email"));
+        next(new Error(`Error from server on updating user's email: ${error.message}`));
     }
 }
 
@@ -76,7 +76,7 @@ export async function changePassword(req, res, next) {
 
     } catch (error) {
         console.error("error on changing user's password: ", error);
-        next(new Error("Error from server on changing user's password"));
+        next(new Error(`Error from server on changing user's password ${error.message}`));
     }
 }
 
@@ -97,7 +97,7 @@ export async function updateUserName(req, res, next) {
         });
     } catch (error) {
         console.error('error from updateUserName catch statement:', error);
-        return res.status(https_codes.SERVER_ERROR).json({ success: false, error: "error from server on updating user's name." });
+        next(new Error(`Error from on updating name: ${error.message}`));
     }
 }
 
@@ -126,7 +126,7 @@ export async function generateAccessKey(req, res, next) {
 
     } catch (error) {
         console.error("error on creating access token: ", error);
-        next(new Error("Error from server on creating access token"))
+        next(new Error(`Error from server on creating access token: ${error.message}`))
     }
 }
 
@@ -145,7 +145,7 @@ export async function getCurrentAccessKey(req, res, next) {
 
     } catch (error) {
         console.error("error on gathering access key: ", error);
-        next(new Error("Error from server on gathering access key"));
+        next(new Error(`Error from server on gathering access key: ${error.message}`));
     }
 }
 
@@ -166,7 +166,7 @@ export async function getTotalRequests(req, res, next) {
 
     } catch (error) {
         console.error("error on gathering requests record: ", error);
-        next(new Error("Error from server on gathering requests record"))
+        next(new Error(`Error from server on gathering requests record: ${error.message}`));
     }
 }
 
@@ -195,7 +195,7 @@ export async function getRequestRecordData(req, res, next) {
 
     } catch (error) {
         console.error("error on gathering requests record to struct date: ", error);
-        next(new Error("Error from server on gathering requests record to struct data"));
+        next(new Error(`Error from server on gathering requests record to struct data: ${error.message}`));
     }
 }
 
@@ -220,6 +220,6 @@ export async function getAccessTokenUsers(req, res, next){
 
     } catch (error) {
         console.error("error on gathering devices info ", error);
-        next(new Error("Error from server on gathering devices info."));
+        next(new Error(`Error from server on gathering devices info: ${error.message}`));
     }
 }

@@ -4,11 +4,14 @@ const UserSchema = new Schema({
     name: {
         type: String,
         required: true,
+        trim: true,
+        lowercase:true
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
     password: {
         type: String,
@@ -25,7 +28,7 @@ const UserSchema = new Schema({
         type: String,
         unique: true
     },
-    total_number_of_succeed_requests:{
+    total_number_of_succeed_requests: {
         type: Number,
         default: 0
     },
@@ -39,6 +42,6 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now
     }
-}, {timestamps: true});
+}, { timestamps: true });
 
 export default mongoose.model('User', UserSchema);

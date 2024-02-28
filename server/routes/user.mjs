@@ -25,24 +25,48 @@ userRoute.put('/updateEmail', [
 }, passValidUser, updateEmail);
 
 // ROUTE 3 : verify and then update user's email.
-userRoute.post('/verifyEmailToUpdate', passValidUser, await verifyEmailVerificationCode(updateEmail2));
-
-// ROUTE 4 : update user's password.
-userRoute.put('/updatePassword', [
-    body("password", 'Password must be at least 8 characters').isLength({ min: 8 })
+userRoute.post('/verifyEmailToUpdate', [
+    body("email", 'Email must be provided').isLength({ min: 5 }).isString().trim().escape()
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(https_codes.BAD_REQUEST).json({ error: errors.array() });
     }
     next();
-}, passValidUser,changePassword);
+}, passValidUser, await verifyEmailVerificationCode(updateEmail2));
+
+// ROUTE 4 : update user's password.
+userRoute.put('/updatePassword', [
+    body("password", 'Password must be at least 8 characters').isLength({ min: 8 }).isString().trim().escape()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(https_codes.BAD_REQUEST).json({ error: errors.array() });
+    }
+    next();
+}, passValidUser, changePassword);
 
 // ROUTE 5: verify and then update user's password.
-userRoute.post('/verifyEmailToUpdatePassword', passValidUser, await verifyEmailVerificationCode(changePassword2));
+userRoute.post('/verifyEmailToUpdatePassword', [
+    body("verificationCode", 'Enter correct verificationCode').isLength({ max: 6 }).isLength({ min: 6 }).isString().trim().escape()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(https_codes.BAD_REQUEST).json({ error: errors.array() });
+    }
+    next();
+}, passValidUser, await verifyEmailVerificationCode(changePassword2));
 
 // ROUTE 6: Update user Name.
-userRoute.put("/updateUserName", passValidUser , updateUserName);
+userRoute.put("/updateUserName", [
+    body("name", 'Enter valid username').isLength({ min: 3 }).isString().trim().escape()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(https_codes.BAD_REQUEST).json({ error: errors.array() });
+    }
+    next();
+}, passValidUser, updateUserName);
 
 // ROUTE 7: Update or generate
 userRoute.put('/generateAccessKey', passValidUser, generateAccessKey);

@@ -5,7 +5,8 @@ const NewsLatterSubsSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim:true
     },
     date: {
         type: Date,

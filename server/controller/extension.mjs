@@ -62,7 +62,7 @@ export async function getVideo(req, res, next) {
             await record.save();
         }
         console.error(error)
-        next(new Error("Error from server on downloading video"));
+        next(new Error(`Error from server on downloading video: ${error.message}`));
     }
 }
 
@@ -121,7 +121,7 @@ export async function getAudio(req, res, next) {
             await record.save();
         }
         console.error(error)
-        next(new Error("Error from server on downloading audio"));
+        next(new Error(`Error from server on downloading audio: ${error.message}`));
     }
 }
 
@@ -149,7 +149,7 @@ export async function getInfo(req, res, next) {
         }
     } catch (error) {
         console.error(error)
-        next(new Error("Error from server on downloading audio"));
+        next(new Error(`Error from server on downloading audio: ${error.message}`));
     }
 }
 

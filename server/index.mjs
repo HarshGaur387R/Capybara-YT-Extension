@@ -6,6 +6,7 @@ import extensionRoute from './routes/extension.mjs'
 import configs from './config/config.mjs';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
+import ExpressMongoSanitize from 'express-mongo-sanitize';
 import * as url from 'url';
 import cors from 'cors';
 import path from 'path';
@@ -15,14 +16,32 @@ import { verify_csrf_token, generate_csrf_token } from './middleware/csrfToken.m
 import { checkPermission } from './middleware/checkPermissions.mjs';
 import expressDevice from 'express-device';
 import handleError from './middleware/errorHandling.mjs';
+import helmet from 'helmet';
+import { randomBytes } from 'crypto';
+const nonce = randomBytes(16).toString('base64');
 
 const app = express();
 const port = 5000;
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 app.use(cors())
-app.use(express.json());
+app.use(express.json({limit:'20kb'}));
 app.use(expressDevice.capture());
+
+app.use(helmet())
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", 'trusted-cdn.com','https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js',`'nonce-${nonce}'`],
+            styleSrc: ["'self'", 'fonts.googleapis.com', 'cdn.jsdelivr.net', `'nonce-${nonce}'`],
+            // Add more directives as needed
+        },
+    })
+);
+app.use(helmet.noSniff()); // Prevent browsers from MIME sniffing
+app.use(helmet.xssFilter()); // Adds the X-XSS-Protection header
+
 
 await connectToDatabase();
 
@@ -37,16 +56,17 @@ const store = new MongoDBStoreSession({
 store.on('error', (error) => { console.error('MongoDB session store error:', error) });
 /* ----------- 🗄️🗄️ --------------------------------- 🗄️🗄️ --------- */
 
-
 // Enable Session for root route -
 app.use(session({
     secret: configs.SESSIONS_SECRET,
     resave: false,
     saveUninitialized: false,
     store: store,
-    cookie: { secure: false, httpOnly: true, maxAge: 24 * 3600 * 1000 }, // Set 'secure: true' if using HTTPS
+    cookie: { secure: false, httpOnly: true, maxAge: 24 * 3600 * 1000 },
+    // For production cookie: { secure: true, httpOnly: true, sameSite: 'strict', maxAge: 24 * 3600 * 1000 },
     rolling: true
 }));
+app.use(ExpressMongoSanitize());
 
 
 // Using ejs -
@@ -64,54 +84,57 @@ function startServer() {
         next();
     };
 
-
     // Routes -
     app.get('/', allowOnlyUnverified, clearSessionPermissions, (req, res) => {
-        res.render("intro");
+        res.render("intro",{nonce:nonce});
+    });
+
+    app.get('/about', clearSessionPermissions, (req, res)=>{
+        res.render('about',{nonce:nonce});
     });
 
     app.get('/home', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
-        res.render('home');
+        res.render('home', {nonce:nonce});
     });
 
     app.get('/profile', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
-        res.render('profile');
+        res.render('profile', {nonce:nonce});
     });
 
     app.get('/changeEmail', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res)=>{
-        res.render('changeEmailForUser');
+        res.render('changeEmailForUser', {nonce:nonce});
     })
 
     app.get('/changePassword', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res)=>{
-        res.render('changePasswordForUser');
+        res.render('changePasswordForUser', {nonce:nonce});
     })
 
     app.get('/dashboard', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
-        res.render('dashboard');
+        res.render('dashboard', {nonce:nonce});
     });
 
     app.get('/contact', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
-        res.render('contact');
+        res.render('contact', {nonce:nonce});
     });
 
     app.get('/login', allowOnlyUnverified, (req, res) => {
-        res.render("login");
+        res.render("login", {nonce:nonce});
     });
 
     app.get('/signup', allowOnlyUnverified, (req, res) => {
-        res.render("signup");
+        res.render("signup", {nonce:nonce});
     });
 
     app.get('/verifyEmail', checkPermission('permissionForEVS'), (req, res) => {
-        res.render('signUpEmailVerificationScreen');
+        res.render('signUpEmailVerificationScreen', {nonce:nonce});
     });
 
     app.get('/forgetPassword', allowOnlyUnverified ,(req, res) => {
-        res.render('forgetPasswordScreen');
+        res.render('forgetPasswordScreen', {nonce:nonce});
     });
 
     app.get('/verifyEmailToForgetPassword', checkPermission('permissionForFPEVS'), (req, res) => {
-        res.render('forgetPasswordVerifyEmail');
+        res.render('forgetPasswordVerifyEmail', {nonce:nonce});
     });
 
 

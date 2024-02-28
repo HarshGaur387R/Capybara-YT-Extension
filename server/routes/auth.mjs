@@ -24,9 +24,9 @@ authRoute.post('/login', [
 
 // ROUTE 2 : Signup user
 authRoute.post('/signup', [
-    body("name", 'Enter a valid name').isLength({ min: 3 }),
+    body("name", 'Enter a valid name').isLength({ min: 3 }).isString().trim().escape(),
     body("email", 'Enter a valid email').isEmail(),
-    body("password", 'Password must be at least 8 characters').isLength({ min: 8 })
+    body("password", 'Password must be at least 8 characters and valid').isLength({ min: 8 }).isString()
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -77,7 +77,7 @@ authRoute.post('/resendCode', rateLimiter(10, 30000, 'Please wait for 30 seconds
 
 // ROUTE 8 : Verify user's accessKey
 authRoute.post('/verifyAccessKey', [
-    body("accessKey", 'Enter a valid accessKey').isLength({ min: 1 }),
+    body("accessKey", 'Enter a valid accessKey').isLength({ min: 1 }).isString().trim().escape(),
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
