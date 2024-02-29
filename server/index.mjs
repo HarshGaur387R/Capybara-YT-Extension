@@ -18,6 +18,7 @@ import expressDevice from 'express-device';
 import handleError from './middleware/errorHandling.mjs';
 import helmet from 'helmet';
 import { randomBytes } from 'crypto';
+import rateLimiter from './middleware/rateLimiter.mjs';
 const nonce = randomBytes(16).toString('base64');
 
 const app = express();
@@ -141,7 +142,7 @@ function startServer() {
     // Apis -
     app.use('/api/v1/auth', authRoute);
     app.use('/api/v1/user', userRoute);
-    app.use('/api/v1/extension', extensionRoute);
+    app.use('/api/v1/extension', rateLimiter(5, 5000, "Wait few seconds before sending new requests"), extensionRoute);
 
 
     // error handling middleware
