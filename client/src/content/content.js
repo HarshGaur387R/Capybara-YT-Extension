@@ -52,10 +52,20 @@ const html = `
     </div>
 </div>
 
+<div class="download-window-loading dis-none">
+    <div class="loading-window-img-container">
+        <span class="loader"></span>
+    </div>
+    <div class="loading-window-heading">
+        <h1>Purr Purr Loading...</h1>
+    </div>
+</div>
+
 <div class="operationsBtnContainer">
     <input type="button" id="downloadMediaBtn" class="operationBtn" value="Download">
     <input type="button" id="cancelBtn" class="operationBtn" value="Cancel">
 </div>
+
 `
 
 const html2 = `
@@ -141,11 +151,19 @@ const html2 = `
             </div>
         </div>
     </div>
-
-
+    
+    <div class="info-container-loading dis-none">
+        <div class="loading-window-img-container">
+            <span class="loader"></span>
+        </div>
+        <div class="loading-window-heading">
+            <h1>Purr Purr Loading...</h1>
+        </div>
     </div>
     <input type="button" id="cancelBtnForGetInfo" class="operationBtn" value="Cancel">
 `
+
+
 
 setTimeout(() => {
 
@@ -274,12 +292,33 @@ function show_getinfo_window(bool) {
     }
 }
 
+function show_download_window_loading(bool) {
+    const download_window_loading = document.querySelector('.download-window-loading');
+    const radio_options = document.querySelector('.radio-options')
+    if (bool) {
+        if (download_window_loading.classList.contains('dis-none')) {
+            download_window_loading.classList.remove('dis-none');
+            radio_options.classList.add('dis-none');
+        }
+        return;
+    }
+    else {
+        if (!download_window_loading.classList.contains('dis-none')) {
+            download_window_loading.classList.add('dis-none');
+            radio_options.classList.remove('dis-none');
+        }
+        return;
+    }
+
+}
+
 async function getVideo(data, accessKey) {
 
     try {
         chrome.runtime.sendMessage({ message: "getURL" }, function (response) {
 
             const tabUrl = response.url;
+            show_download_window_loading(true);
 
             let headersList = {
                 "Content-Type": "application/json"
@@ -319,6 +358,8 @@ async function getVideo(data, accessKey) {
                 })
                 .finally(() => {
                     document.getElementById('downloadMediaBtn').disabled = false;
+                    show_download_window_loading(false);
+
                 })
         });
     } catch (error) {
@@ -334,6 +375,7 @@ async function getAudio(data, accessKey) {
         chrome.runtime.sendMessage({ message: "getURL" }, function (response) {
 
             const tabUrl = response.url;
+            show_download_window_loading(true);
 
             let headersList = {
                 "Content-Type": "application/json"
@@ -372,6 +414,7 @@ async function getAudio(data, accessKey) {
                 })
                 .finally(() => {
                     document.getElementById('downloadMediaBtn').disabled = false;
+                    show_download_window_loading(false);
                 })
         });
     } catch (error) {
@@ -385,6 +428,8 @@ async function getInfo(accessKey) {
         chrome.runtime.sendMessage({ message: "getURL" }, function (response) {
 
             const tabUrl = response.url;
+
+            show_info_container_loading(false)
 
             let headersList = {
                 "Content-Type": "application/json"
@@ -401,6 +446,7 @@ async function getInfo(accessKey) {
             const forUploadedAt = document.querySelector('.forUploadedAt');
             const forAuthorName = document.querySelector('.forAuthorName');
             const forAuthorUserName = document.querySelector('.forAuthorUserName');
+
 
             fetch(`http://localhost:5000/api/v1/extension/getInfo?url=${tabUrl}`,
                 {
@@ -427,11 +473,30 @@ async function getInfo(accessKey) {
                         forUploadedAt.lastElementChild.innerText = new Intl.DateTimeFormat('en-US', options).format(new Date(res.data.uploadedDate));
                     }
                 })
-            // COMPLETE THIS SHIT ===>
-
+                .finally(() => {
+                    show_info_container_loading(true)
+                })
         });
     } catch (error) {
         alert('Error on retrieving info')
         console.log(error);
+    }
+}
+
+function show_info_container_loading(bool) {
+
+    const infoContainer = document.querySelector('.info-container');
+    const infoContainerLoading = document.querySelector('.info-container-loading');
+    if (bool) {
+        if (infoContainer.classList.contains('dis-none')) {
+            infoContainer.classList.remove('dis-none');
+            infoContainerLoading.classList.add('dis-none');
+        }
+    }
+    else {
+        if (!infoContainer.classList.contains('dis-none')) {
+            infoContainer.classList.add('dis-none');
+            infoContainerLoading.classList.remove('dis-none');
+        }
     }
 }
