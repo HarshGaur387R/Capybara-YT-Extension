@@ -335,6 +335,7 @@ async function getVideo(data, accessKey) {
                 })
                 .then(response => {
                     if (!response.ok) {
+                        alert('Failed to download video')
                         throw new Error('Network response was not ok');
                     }
                     return response.blob();
@@ -392,6 +393,7 @@ async function getAudio(data, accessKey) {
                 })
                 .then(response => {
                     if (!response.ok) {
+                        alert('Failed to download audio')
                         throw new Error('Network response was not ok');
                     }
                     return response.blob();
@@ -456,6 +458,7 @@ async function getInfo(accessKey) {
                 })
                 .then(response => {
                     if (!response.ok) {
+                        alert('Failed to gather info')
                         throw new Error('Network response was not ok');
                     }
                     return response.json();
