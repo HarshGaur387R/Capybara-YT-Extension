@@ -41,6 +41,14 @@ export async function getVideo(req, res, next) {
         await user.save();
 
         if (url) {
+
+            const videoId = ytdl.getURLVideoID(url);
+            const info = await ytdl.getInfo(videoId);
+
+            if (info.videoDetails.liveBroadcastDetails && info.videoDetails.liveBroadcastDetails.isLiveNow) {
+                throw Object.assign(new Error("Live videos are not allowed"), { statusCode: https_codes.BAD_REQUEST });
+            }
+
             res.header('Content-Disposition', 'attachment; filename="video.mp4"');
             ytdl(url, { format: format, quality: quality }).pipe(res);
 
@@ -101,6 +109,14 @@ export async function getAudio(req, res, next) {
 
 
         if (url) {
+
+            const videoId = ytdl.getURLVideoID(url);
+            const info = await ytdl.getInfo(videoId);
+
+            if (info.videoDetails.liveBroadcastDetails && info.videoDetails.liveBroadcastDetails.isLiveNow) {
+                throw Object.assign(new Error("Live videos are not allowed"), { statusCode: https_codes.BAD_REQUEST });
+            }
+
             res.header('Content-Disposition', 'attachment; filename="audio.mp3"');
             ytdl(url, { filter: 'audioonly', format: format }).pipe(res);
 
@@ -137,7 +153,6 @@ export async function getInfo(req, res, next) {
         if (url) {
             let info = await ytdl.getInfo(videoId);
             let dataToReturn;
-
             if (info) {
                 dataToReturn = { title: info.videoDetails.title, description: info.videoDetails.description, keywords: info.videoDetails.keywords, category: info.videoDetails.category, publishedDate: info.videoDetails.publishDate, uploadedDate: info.videoDetails.uploadDate, Author: { name: info.videoDetails.author.name, user: info.videoDetails.author.user } }
             }
