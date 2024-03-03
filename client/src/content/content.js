@@ -213,6 +213,7 @@ setTimeout(() => {
             const cancelBtn = document.getElementById('cancelBtn');
             cancelBtn.onclick = (e) => {
                 show_download_window(false);
+                controller.abort();
             }
 
             const cancelBtnForGetInfo = document.getElementById('cancelBtnForGetInfo');
@@ -228,6 +229,11 @@ setTimeout(() => {
                 const audioFormat = document.querySelector('input[name="audioFormat"]:checked')?.value;
                 const videoFormat = document.querySelector('input[name="videoFormat"]:checked')?.value;
                 downloadMediaBtn.disabled = true;
+
+                if(signal.aborted){
+                    controller = new AbortController();
+                    signal = controller.signal;
+                }
 
                 if ((media && media === 'video') && quality && videoFormat) {
                     getVideo({ videoFormat, quality }, accessKey)
@@ -250,7 +256,6 @@ setTimeout(() => {
             });
 
             if (menuElement) {
-                console.log(downloadBtnContainers);
                 menuElement.parentNode.insertBefore(downloadBtnContainers, menuElement.nextSibling);
             }
         }
@@ -312,6 +317,9 @@ function show_download_window_loading(bool) {
 
 }
 
+let controller = new AbortController();
+let signal = controller.signal;
+
 async function getVideo(data, accessKey) {
 
     try {
@@ -331,7 +339,8 @@ async function getVideo(data, accessKey) {
                 {
                     method: "POST",
                     body: bodyContent,
-                    headers: headersList
+                    headers: headersList,
+                    signal: signal
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -357,6 +366,13 @@ async function getVideo(data, accessKey) {
                     alert('Video downloaded successfully')
 
                 })
+                .catch((error) => {
+                    if (error.name === 'AbortError') {
+                        alert('Downloading Cancelled')
+                        console.log('Download aborted.');
+                        return;
+                    }
+                })
                 .finally(() => {
                     document.getElementById('downloadMediaBtn').disabled = false;
                     show_download_window_loading(false);
@@ -365,16 +381,14 @@ async function getVideo(data, accessKey) {
         });
     } catch (error) {
         alert('Error on retrieving Video')
-        console.log(error);
+        console.error(error);
     }
 }
 
 
 async function getAudio(data, accessKey) {
-
     try {
         chrome.runtime.sendMessage({ message: "getURL" }, function (response) {
-
             const tabUrl = response.url;
             show_download_window_loading(true);
 
@@ -389,7 +403,8 @@ async function getAudio(data, accessKey) {
                 {
                     method: "POST",
                     body: bodyContent,
-                    headers: headersList
+                    headers: headersList,
+                    signal: signal
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -414,6 +429,13 @@ async function getAudio(data, accessKey) {
 
                     alert('Audio downloaded successfully')
                 })
+                .catch((error) => {
+                    if (error.name === 'AbortError') {
+                        alert('Downloading Cancelled')
+                        console.log('Download aborted.');
+                        return;
+                    }
+                })
                 .finally(() => {
                     document.getElementById('downloadMediaBtn').disabled = false;
                     show_download_window_loading(false);
@@ -421,7 +443,7 @@ async function getAudio(data, accessKey) {
         });
     } catch (error) {
         alert('Error on retrieving audio')
-        console.log(error);
+        console.error(error);
     }
 }
 
@@ -482,7 +504,7 @@ async function getInfo(accessKey) {
         });
     } catch (error) {
         alert('Error on retrieving info')
-        console.log(error);
+        console.error(error);
     }
 }
 
