@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CapybaraComments - change password</title>
+    <title>CapybaraComments - change Email</title>
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Capybara Downloader - Download youtube videos and audios and etc." />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -110,6 +110,12 @@
         }
 
 
+        @media screen and (max-width: 420px) {
+            .fp-form{
+                width: 100%;
+            }
+        }
+
         .login-container {
             height: 100vh;
             display: flex;
@@ -204,6 +210,23 @@
 
         .vc-form-footer {
             gap: 20px;
+        }
+
+
+        @media screen and (max-width: 690px) {
+            .verificationCard{
+                width: 400px;
+            }
+        }
+
+        @media screen and (max-width: 420px) {
+            .verificationCard{
+                width: 300px;
+            }
+
+            .verification-code-inputs input{
+                width: 40px;
+            }
         }
 
         #editEmailBtn:hover {

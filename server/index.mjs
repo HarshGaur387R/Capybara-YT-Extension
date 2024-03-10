@@ -94,6 +94,10 @@ function startServer() {
         res.render('about',{nonce:nonce});
     });
 
+    app.get('/privacy-policy', clearSessionPermissions, (req, res)=>{
+        res.render('privacy-policy',{nonce:nonce});
+    });
+
     app.get('/home', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
         res.render('home', {nonce:nonce});
     });

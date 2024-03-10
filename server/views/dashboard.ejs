@@ -96,10 +96,44 @@
             background-color: transparent;
         }
 
-        nav {
+        .navigation-bar {
             width: 350px;
             height: 100%;
             background-color: #0c0c0c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column;
+        }
+
+
+        .responsive-nav-bar-container {
+            position: fixed;
+            top: 0;
+            background-color: orange;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            display: none !important;
+            z-index: 10001;
+        }
+
+        .responsive-nav-bar {
+            display: flex;
+            position: fixed;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: column;
+            background-color: #1E1E1E;
+            top: -9000px;
+            width: 100%;
+            height: 100%;
+            display: none !important;
+            z-index: 10002;
+        }
+
+        .responsive-nav-bar .logo {
+            font-size: xx-large;
         }
 
         /* Nav */
@@ -167,7 +201,6 @@
         }
 
         .requests-record-container {
-            /* background-color: green; */
             width: 95%;
             height: 100%;
             gap: 30px;
@@ -286,7 +319,6 @@
             background-color: orange;
         }
 
-
         .devicesContainer {
             color: white;
             gap: 20px;
@@ -335,13 +367,90 @@
             background: #b30000;
             /* Darken the thumb color when you hover over it */
         }
+
+        @media screen and (max-width: 900px) {
+            .navigation-bar {
+                display: none;
+            }
+
+            .responsive-nav-bar-container {
+                display: block !important;
+            }
+
+            .responsive-nav-bar-container .material-symbols-outlined {
+                font-size: xx-large;
+            }
+
+            .responsive-nav-bar {
+                display: flex !important;
+            }
+
+            .requests-record-container {
+                margin-top: 50px;
+            }
+        }
+
+        @media screen and (max-width: 1160px) {
+            :root {
+                --chart-gap: 30px;
+                --chart-box-width: 300px;
+            }
+        }
+
+        @media screen and (max-width: 940px) {
+            .requests-record-container {
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width: 650px) {
+            .requests-record-container {
+                height: fit-content;
+                padding: 5px;
+            }
+
+            .download-records-container {
+                flex-wrap: wrap;
+                /* height: fit-content; */
+            }
+
+            .download-date-chart-container {
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .first-row-charts {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <main class="flex-row d-flex justify-content-center align-items-center">
-        <nav class="navigation-bar d-flex justify-content-between align-items-center flex-column">
+        <nav class="responsive-nav-bar-container">
+            <span class="material-symbols-outlined menu-btn-respo">
+                menu
+            </span>
+        </nav>
+
+        <nav class="responsive-nav-bar">
+            <div class="logo pt-5">Capybara</div>
+            <ul class="navbar-list text-center">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <div class="logout-btn d-flex justify-content-center align-items-center pb-5">
+                <button type="button">Logout</button>
+                <span class="material-symbols-outlined">move_item</span>
+            </div>
+        </nav>
+
+        <nav class="navigation-bar">
             <div class="logo pt-5">Capybara</div>
             <ul class="navbar-list text-center">
                 <li><a href="/home">Home</a></li>
@@ -404,7 +513,7 @@
             <br><br><br>
             <div class="devicesContainer d-flex align-items-center justify-content-center flex-column p-5">
                 <h2 class="text-start">Devices Using Your Access Token :</h2>
-                
+
             </div>
         </section>
     </main>
@@ -424,6 +533,25 @@
         </script>
     <script nonce="<%= nonce %>">
         const hostURL = 'http://localhost:5000'
+
+        const menu_btn_respo = document.querySelector('.menu-btn-respo');
+        const responsive_nav_bar = document.querySelector('.responsive-nav-bar');
+        const responsive_nav_bar_container = document.querySelector('.responsive-nav-bar-container');
+
+        if (menu_btn_respo) {
+            menu_btn_respo.onclick = (e) => {
+                if (responsive_nav_bar.style.display === 'none') {
+                    responsive_nav_bar.style.display = 'flex';
+                    responsive_nav_bar.style.top = '45px'
+                    responsive_nav_bar_container.style.display = 'block';
+                }
+                else {
+                    responsive_nav_bar.style.display = 'none';
+                    responsive_nav_bar.style.top = '-9000px'
+                    responsive_nav_bar_container.style.display = 'none';
+                }
+            }
+        }
 
         const input = document.querySelector('.capy-input-container input');
         const generate_btn = document.getElementById('generate-btn');
@@ -651,12 +779,15 @@
         }
 
         // Logout-btn
-        const logout_btn = document.querySelector('.logout-btn button');
+        const logout_btn = document.querySelectorAll('.logout-btn button');
 
-        if (logout_btn) {
-            logout_btn.onclick = async (e) => {
-                await logout();
-            }
+        if (logout_btn.length > 0) {
+            logout_btn.forEach(e => {
+                e.onclick = async (e) => {
+                    console.log('logout button clicked! in logout button cb');
+                    await logout();
+                }
+            });
         }
 
         async function logout() {

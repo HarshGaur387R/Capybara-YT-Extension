@@ -15,7 +15,6 @@
     <link rel="manifest" href="favicon_io/site.webmanifest">
 
     <style nonce="<%= nonce %>">
-        
         @import url('https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Jua&display=swap');
@@ -84,15 +83,15 @@
             width: 70%;
         }
 
-        .image1{
+        .image1 {
             background-image: url('/images/capys.png');
         }
 
-        .image2{
+        .image2 {
             background-image: url('/images/capybaraOrange.png');
         }
 
-        .image3{
+        .image3 {
             background-image: url('/images/capybaraOrange2.png');
         }
 
@@ -353,6 +352,84 @@
         .dis-none {
             display: none !important;
         }
+
+        @media screen and (max-width:780px) {
+            .section1 {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .sec-text {
+                align-items: center !important;
+                justify-content: center !important;
+                margin-top: -60px;
+            }
+
+            .section2 {
+                flex-direction: column-reverse;
+                text-align: center;
+            }
+
+            .section3 {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .news-latter-form {
+                padding: 10px;
+            }
+
+            .news-latter-form-input {
+                width: 100%;
+            }
+
+            .news-latter-links-container {
+                gap: 50px;
+            }
+
+            .image-container {
+                width: 50%;
+                height: 50%;
+            }
+
+            .sec-text-btn button {
+                padding: 5px;
+                font-size: large;
+            }
+
+            .news-latter-form-btn {
+                font-size: x-large;
+                padding-left: 41px;
+                padding-right: 41px;
+                padding-top: 11px;
+                padding-bottom: 11px;
+            }
+
+            .news-latter-form-btn::after{
+                font-size: x-large;
+            }
+        }
+
+        @media screen and (max-width: 410px) {
+            .news-latter-links-container {
+                gap: 30px;
+            }
+
+        }
+
+        @media screen and (max-width: 370px) {
+            .news-latter-links-container a {
+                font-size: x-small;
+            }
+
+            .links-row-heading {
+                font-size: small;
+            }
+
+            .sec-text-para {
+                font-size: small;
+            }
+        }
     </style>
 </head>
 
@@ -370,7 +447,7 @@
 
     <main>
         <div class="container">
-            <section class="section row">
+            <section class="section section1 row">
                 <div class="sec-image col">
                     <div class="image-container image1">
                         &nbsp;
@@ -392,10 +469,9 @@
                         <button id="signup-btn">Sign Up</button>
                     </div>
                 </div>
-
             </section>
 
-            <section class="section row">
+            <section class="section section2 row">
                 <div class="sec-text col align-items-end">
                     <div class="sec-text-head max-width">
                         <h2>Unlock the Power of Capybara Extension - Now Available for Free</h2>
@@ -417,8 +493,7 @@
                 </div>
             </section>
 
-            <section class="section row">
-
+            <section class="section section3 row">
                 <div class="sec-image col">
                     <div class="image-container image3">
                         &nbsp;
@@ -466,13 +541,15 @@
                     <div class="links-col">
                         <div class="links-row-heading">About Me</div>
                         <a href="https://github.com/HarshGaur387R" class="links" target="_blank">Github</a>
-                        <a href="https://www.linkedin.com/in/harsh-gaur-a0b525217/" class="links" target="_blank">LinkedIn</a>
+                        <a href="https://www.linkedin.com/in/harsh-gaur-a0b525217/" class="links"
+                            target="_blank">LinkedIn</a>
                         <a href="#" class="links">Portfolio</a>
                     </div>
                     <div class="links-col">
                         <div class="links-row-heading">Follow</div>
                         <a href="https://www.instagram.com/heerokuun/" class="links" target="_blank">Instagram</a>
-                        <a href="https://www.facebook.com/profile.php?id=61556928359874" class="links" target="_blank">Facebook</a>
+                        <a href="https://www.facebook.com/profile.php?id=61556928359874" class="links"
+                            target="_blank">Facebook</a>
                         <a href="https://twitter.com/hgaur701" class="links">Twitter</a>
                     </div>
                     <div class="links-col">
@@ -559,11 +636,11 @@
         }
 
         const download_btn = document.getElementById('download-btn');
-        if(download_btn){
-            download_btn.addEventListener('click',(e)=>{
+        if (download_btn) {
+            download_btn.addEventListener('click', (e) => {
                 const a_tag = document.createElement('a');
-                a_tag.href = '/capybara-extension.zip';
-                a_tag.download = 'capybara-extension.zip';
+                a_tag.href = '/extension.zip';
+                a_tag.download = 'capybara-extension';
                 a_tag.click();
             })
         }
