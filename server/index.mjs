@@ -51,7 +51,7 @@ const MongoDBStoreSession = MongoDBStore(session);
 
 // Configure MongoDB session store
 const store = new MongoDBStoreSession({
-    uri: configs.MONGODB_CONNECTION_STRING, // MongoDB connection URI
+    uri: `${configs.MONGODB_CONNECTION_STRING}/${configs.DATABASE_NAME}`, // MongoDB connection URI
     collection: "Sessions", // Collection name for storing sessions
 });
 store.on('error', (error) => { console.error('MongoDB session store error:', error) });
