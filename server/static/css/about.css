@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Jua&display=swap');
+
+:root {
+    --var1: -220px;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: #1E1E1E;
+}
+
+.logo {
+    padding: 10px 0px 10px 35px;
+    color: #FFF;
+    font-family: "Leckerli One";
+    font-size: x-large;
+    font-style: normal;
+    font-weight: 400;
+    text-align: center;
+    background-color: orange;
+}
+
+.container {
+    gap: 20px;
+}
+
+section {
+    color: white;
+    /* background-color: red; */
+    width: 500px;
+    text-align: start;
+}
+
+section h1 {
+    color: orange;
+}
+
+video {
+    width: 500px;
+}
+
+.links-col {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    display: inline-flex;
+}
+
+.links-row-heading {
+    color: orange;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 500;
+    word-wrap: break-word
+}
+
+.links {
+    color: white;
+    font-size: 16px;
+    font-family: Inter;
+    font-weight: 500;
+    word-wrap: break-word;
+    text-decoration: none;
+}
+
+.links:hover {
+    color: rgb(252, 215, 142) !important;
+}
+
+.message-pop {
+    position: fixed;
+    z-index: 1000;
+    background-color: orange;
+    width: 300px;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, 10%);
+    padding: 10px;
+    padding-top: 0%;
+    border: 5px solid #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.cross-btn {
+    font-size: large;
+    background-color: red;
+    font-weight: 900;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.cross-btn-container {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+
+.message-pop .message {
+    color: black;
+    font-size: medium;
+    word-wrap: break-word;
+}
+
+.message-pop-inner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2px;
+    color: black;
+    font-size: x-large;
+}
+
+.dis-none {
+    display: none !important;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    color: orange;
+}
+
+@media screen and (max-width : 530px) {
+    section {
+        width: 300px;
+    }
+
+    video {
+        width: 300px;
+    }
+}

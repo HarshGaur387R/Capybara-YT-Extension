@@ -26,7 +26,7 @@ const port = 5000;
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 app.use(cors())
-app.use(express.json({limit:'20kb'}));
+app.use(express.json({ limit: '20kb' }));
 app.use(expressDevice.capture());
 
 app.use(helmet())
@@ -34,7 +34,7 @@ app.use(
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", 'trusted-cdn.com','https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js',`'nonce-${nonce}'`],
+            scriptSrc: ["'self'", 'trusted-cdn.com', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', `'nonce-${nonce}'`],
             styleSrc: ["'self'", 'fonts.googleapis.com', 'cdn.jsdelivr.net', `'nonce-${nonce}'`],
             // Add more directives as needed
         },
@@ -63,7 +63,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: store,
-    cookie: { secure: false, httpOnly: true, maxAge: 24 * 3600 * 1000 },
+    cookie: { secure: false, httpOnly: true, sameSite: 'strict', maxAge: 24 * 3600 * 1000 },
     // For production cookie: { secure: true, httpOnly: true, sameSite: 'strict', maxAge: 24 * 3600 * 1000 },
     rolling: true
 }));
@@ -87,59 +87,63 @@ function startServer() {
 
     // Routes -
     app.get('/', allowOnlyUnverified, clearSessionPermissions, (req, res) => {
-        res.render("intro",{nonce:nonce});
+        res.render("intro", { nonce: nonce });
     });
 
-    app.get('/about', clearSessionPermissions, (req, res)=>{
-        res.render('about',{nonce:nonce});
+    app.get('/nonce', (req, res) => {
+        res.send(nonce);
     });
 
-    app.get('/privacy-policy', clearSessionPermissions, (req, res)=>{
-        res.render('privacy-policy',{nonce:nonce});
+    app.get('/about', clearSessionPermissions, (req, res) => {
+        res.render('about', { nonce: nonce });
+    });
+
+    app.get('/privacy-policy', clearSessionPermissions, (req, res) => {
+        res.render('privacy-policy', { nonce: nonce });
     });
 
     app.get('/home', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
-        res.render('home', {nonce:nonce});
+        res.render('home', { nonce: nonce });
     });
 
     app.get('/profile', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
-        res.render('profile', {nonce:nonce});
+        res.render('profile', { nonce: nonce });
     });
 
-    app.get('/changeEmail', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res)=>{
-        res.render('changeEmailForUser', {nonce:nonce});
+    app.get('/changeEmail', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
+        res.render('changeEmailForUser', { nonce: nonce });
     })
 
-    app.get('/changePassword', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res)=>{
-        res.render('changePasswordForUser', {nonce:nonce});
+    app.get('/changePassword', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
+        res.render('changePasswordForUser', { nonce: nonce });
     })
 
     app.get('/dashboard', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
-        res.render('dashboard', {nonce:nonce});
+        res.render('dashboard', { nonce: nonce });
     });
 
     app.get('/contact', allowOnlyVerifiedUsers, clearSessionPermissions, (req, res) => {
-        res.render('contact', {nonce:nonce});
+        res.render('contact', { nonce: nonce });
     });
 
     app.get('/login', allowOnlyUnverified, (req, res) => {
-        res.render("login", {nonce:nonce});
+        res.render("login", { nonce: nonce });
     });
 
     app.get('/signup', allowOnlyUnverified, (req, res) => {
-        res.render("signup", {nonce:nonce});
+        res.render("signup", { nonce: nonce });
     });
 
     app.get('/verifyEmail', checkPermission('permissionForEVS'), (req, res) => {
-        res.render('signUpEmailVerificationScreen', {nonce:nonce});
+        res.render('signUpEmailVerificationScreen', { nonce: nonce });
     });
 
-    app.get('/forgetPassword', allowOnlyUnverified ,(req, res) => {
-        res.render('forgetPasswordScreen', {nonce:nonce});
+    app.get('/forgetPassword', allowOnlyUnverified, (req, res) => {
+        res.render('forgetPasswordScreen', { nonce: nonce });
     });
 
     app.get('/verifyEmailToForgetPassword', checkPermission('permissionForFPEVS'), (req, res) => {
-        res.render('forgetPasswordVerifyEmail', {nonce:nonce});
+        res.render('forgetPasswordVerifyEmail', { nonce: nonce });
     });
 
 
@@ -158,10 +162,3 @@ app.listen(port, () => {
 });
 
 startServer();
-
-
-
-// TODO :
-
-// 1) Create Dashboard.ejs
-// 2) Make Dashboard.ejs functional
