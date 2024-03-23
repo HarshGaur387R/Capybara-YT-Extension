@@ -90,10 +90,6 @@ function startServer() {
         res.render("intro", { nonce: nonce });
     });
 
-    app.get('/nonce', (req, res) => {
-        res.send(nonce);
-    });
-
     app.get('/about', clearSessionPermissions, (req, res) => {
         res.render('about', { nonce: nonce });
     });

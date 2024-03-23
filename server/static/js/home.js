@@ -1,4 +1,4 @@
-const hostURL = "http://localhost:5000";
+const hostURL = conf.HOST_URL
 
 const menu_btn_respo = document.querySelector('.menu-btn-respo');
 const responsive_nav_bar = document.querySelector('.responsive-nav-bar');

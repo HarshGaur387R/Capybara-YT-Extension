@@ -1,4 +1,4 @@
-const hostURL = 'http://localhost:5000'
+const hostURL = conf.HOST_URL
 
 const message_pop = document.querySelector('.message-pop');
 const cross_btn = document.querySelector('.cross-btn');

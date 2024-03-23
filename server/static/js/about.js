@@ -1,5 +1,3 @@
-const hostURL = 'http://localhost:5000'
-
 const message_pop = document.querySelector('.message-pop');
 const cross_btn = document.querySelector('.cross-btn');
 
@@ -90,7 +88,7 @@ async function subscribeToNewsLatter(email) {
             })
         }
 
-        await fetch(`${hostURL}/api/v1/auth/subscribeToNewsLatter`, parameter)
+        await fetch(`${conf.HOST_URL}/api/v1/auth/subscribeToNewsLatter`, parameter)
             .then((res) => res.json())
             .then((res) => {
                 if (res.error) {
