@@ -2,7 +2,16 @@
 
 ## Overview
 
-The Capybara YouTube Video Downloader Extension is a browser extension designed for Chrome and Edge browsers. This extension allows users to easily download YouTube videos and audios directly from their browser. Users can monitor download requests from website, users can keep track of the videos and audios they've requested to download using their unique access token.
+The Capybara YouTube Video Downloader Extension is a browser extension designed for Chrome and Edge browsers. This extension allows users to easily download YouTube videos and audios directly from their browser. Users can monitor download requests from website, users can keep track of the videos and audios they've requested to download using their unique access token. This Project is highly focused on backend this is why i used view.js for frontend.
+
+## Tech Stack -
+
+### Frontend
+- View.js engine
+### Backend
+- Express.js
+- Mongodb
+
 
 ## Features
 
