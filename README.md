@@ -57,7 +57,8 @@ The Capybara YouTube Video Downloader Extension is a browser extension designed 
 
 ## Watch Tutorial Video For Better Understanding
 
-[Tutorial in one video](https://github.com/HarshGaur387R/Capybara-YT-Extension/blob/main/server/static/videos/how-to-download-capybara-extension%20-%20Made%20with%20Clipchamp.mp4)
+1. [Click on this video link](https://github.com/HarshGaur387R/Capybara-YT-Extension/blob/main/server/static/videos/how-to-download-capybara-extension%20-%20Made%20with%20Clipchamp.mp4)
+2. Click on view Raw.
 
 ## Troubleshooting
 
