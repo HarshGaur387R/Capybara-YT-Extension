@@ -1,4 +1,4 @@
-import https_codes from "../config/http_code.mjs";
+import https_codes from "../constants/http_code.mjs";
 import userSchema from '../models/User.mjs'
 
 
@@ -17,7 +17,7 @@ export async function changePassword2(req, res) {
 
         delete req.session.newPassword;
         delete req.session.permissionForEVS;
-        
+
         return res.status(https_codes.SUCCESS).json({ success: true, meg: "User's password updated successfully" });
 
     } catch (error) {

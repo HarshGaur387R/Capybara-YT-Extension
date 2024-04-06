@@ -1,7 +1,7 @@
 import express from 'express';
 import { changePassword, generateAccessKey, getAccessTokenUsers, getCurrentAccessKey, getRequestRecordData, getTotalRequests, myData, updateEmail, updateUserName } from '../controller/user.mjs';
 import { body, validationResult } from 'express-validator';
-import https_codes from '../config/http_code.mjs';
+import https_codes from '../constants/http_code.mjs';
 import { passValidUser } from '../middleware/passValidUser.mjs';
 import { verifyEmailVerificationCode } from '../module/EmailVerification.mjs';
 import { updateEmail2 } from '../module/updateEmail.mjs';

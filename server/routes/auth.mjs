@@ -1,7 +1,7 @@
 import express from 'express';
 import { SubscribeNewsLatter, forgetPassword, loginController, resendCode, signupController, verifyAccessKey } from '../controller/auth.mjs';
 import { body, validationResult } from 'express-validator';
-import https_codes from '../config/http_code.mjs';
+import https_codes from '../constants/http_code.mjs';
 import { verifyEmailVerificationCode } from '../module/EmailVerification.mjs';
 import { createUser } from '../module/createUser.mjs';
 import { changePassword2 } from '../module/changePassword.mjs';
@@ -87,7 +87,7 @@ authRoute.post('/verifyAccessKey', [
 }, verifyAccessKey);
 
 // ROUTE 9 : Subscribe to news latter
-authRoute.post('/subscribeToNewsLatter', rateLimiter(10, 60 * 1000, 'Too many request. Please wait before sending new request.' ) ,[
+authRoute.post('/subscribeToNewsLatter', rateLimiter(10, 60 * 1000, 'Too many request. Please wait before sending new request.'), [
     body("email", 'Enter a valid email').isEmail(),
 ], (req, res, next) => {
     const errors = validationResult(req);
@@ -95,6 +95,6 @@ authRoute.post('/subscribeToNewsLatter', rateLimiter(10, 60 * 1000, 'Too many re
         return res.status(https_codes.BAD_REQUEST).json({ error: errors.array() });
     }
     next();
-},SubscribeNewsLatter);
+}, SubscribeNewsLatter);
 
 export default authRoute;

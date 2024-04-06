@@ -1,4 +1,4 @@
-import https_codes from "../config/http_code.mjs";
+import https_codes from "../constants/http_code.mjs";
 import crypto from 'crypto';
 
 export function generate_csrf_token(req, res, next) {
@@ -33,7 +33,7 @@ export function verify_csrf_token(req, res, next) {
     }
 
     if (csrfFromRequest !== token) {
-        console.log('Token Not Matched: ', csrfFromRequest, token); 
+        console.log('Token Not Matched: ', csrfFromRequest, token);
 
         res.removeHeader('xsrf-auth');
         res.clearCookie('entryToken');

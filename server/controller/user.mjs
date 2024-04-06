@@ -1,4 +1,4 @@
-import https_codes from '../config/http_code.mjs';
+import https_codes from '../constants/http_code.mjs';
 import bcrypt from 'bcrypt';
 import configs from '../config/config.mjs';
 import { sendEmailVerificationCode } from '../module/EmailVerification.mjs';
@@ -199,7 +199,7 @@ export async function getRequestRecordData(req, res, next) {
     }
 }
 
-export async function getAccessTokenUsers(req, res, next){
+export async function getAccessTokenUsers(req, res, next) {
     try {
         const user_id = req.session.user._id;
         const user = await User.findById(user_id).populate('requestsRecord');
@@ -209,14 +209,14 @@ export async function getAccessTokenUsers(req, res, next){
         }
         const data = new Map();
 
-        user.requestsRecord.forEach((record)=>{
-            const {deviceType, OS_Name} = record;
-            const deviceKey = `${deviceType}-${OS_Name}`;            
-            data.set(deviceKey, {deviceType, OS_Name});
+        user.requestsRecord.forEach((record) => {
+            const { deviceType, OS_Name } = record;
+            const deviceKey = `${deviceType}-${OS_Name}`;
+            data.set(deviceKey, { deviceType, OS_Name });
         });
 
         const arrayData = Array.from(data.values());
-        res.status(https_codes.SUCCESS).json({success: true, data : arrayData});
+        res.status(https_codes.SUCCESS).json({ success: true, data: arrayData });
 
     } catch (error) {
         console.error("error on gathering devices info ", error);

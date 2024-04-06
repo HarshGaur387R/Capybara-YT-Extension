@@ -1,5 +1,5 @@
 import ytdl from "ytdl-core";
-import https_codes from "../config/http_code.mjs";
+import https_codes from "../constants/http_code.mjs";
 import User from "../models/User.mjs";
 import RequestsRecord from '../models/RequestsRecord.mjs'
 

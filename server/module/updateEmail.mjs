@@ -1,4 +1,4 @@
-import https_codes from "../config/http_code.mjs";
+import https_codes from "../constants/http_code.mjs";
 import userSchema from '../models/User.mjs'
 
 export async function updateEmail2(req, res) {
@@ -12,7 +12,7 @@ export async function updateEmail2(req, res) {
         const oldEmail = req.session.user.email;
         user = await userSchema.findOne({ email: oldEmail });
         if (!user) return res.status(https_codes.CONFLICT_ERROR).json({ success: false, error: { msg: "User not found" } });
-        
+
         user.email = newEmail;
         await user.save();
 

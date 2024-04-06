@@ -1,4 +1,4 @@
-import https_codes from "../config/http_code.mjs";
+import https_codes from "../constants/http_code.mjs";
 import userSchema from '../models/User.mjs'
 import configs from "../config/config.mjs";
 import jsonwebtoken from 'jsonwebtoken';
