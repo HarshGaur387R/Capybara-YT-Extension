@@ -55,6 +55,10 @@ The Capybara YouTube Video Downloader Extension is a browser extension designed 
 2. Enter your access token to log in.
 3. Once logged in, you can view and monitor the download requests associated from `website` with your token.
 
+## Watch Tutorial Video For Better Understanding
+
+[Tutorial in one video](https://github.com/HarshGaur387R/Capybara-YT-Extension/blob/main/server/static/videos/how-to-download-capybara-extension%20-%20Made%20with%20Clipchamp.mp4)
+
 ## Troubleshooting
 
 - For technical support, contact me [at LinkedIn](https://www.linkedin.com/in/harsh-gaur-a0b525217).
