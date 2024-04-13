@@ -335,7 +335,7 @@ async function getVideo(data, accessKey) {
                 accessKey: accessKey
             });
 
-            fetch(`http://localhost:5000/api/v1/extension/downloadVideo?format=${data.videoFormat}&quality=${data.quality}&url=${tabUrl}`,
+            fetch(`https://capybara-yt-extension.vercel.app/api/v1/extension/downloadVideo?format=${data.videoFormat}&quality=${data.quality}&url=${tabUrl}`,
                 {
                     method: "POST",
                     body: bodyContent,
@@ -399,7 +399,7 @@ async function getAudio(data, accessKey) {
                 accessKey: accessKey
             });
 
-            fetch(`http://localhost:5000/api/v1/extension/downloadAudio?format=${data.audioFormat}&url=${tabUrl}`,
+            fetch(`https://capybara-yt-extension.vercel.app/api/v1/extension/downloadAudio?format=${data.audioFormat}&url=${tabUrl}`,
                 {
                     method: "POST",
                     body: bodyContent,
@@ -472,7 +472,7 @@ async function getInfo(accessKey) {
             const forAuthorUserName = document.querySelector('.forAuthorUserName');
 
 
-            fetch(`http://localhost:5000/api/v1/extension/getInfo?url=${tabUrl}`,
+            fetch(`https://capybara-yt-extension.vercel.app/api/v1/extension/getInfo?url=${tabUrl}`,
                 {
                     method: "POST",
                     body: bodyContent,
