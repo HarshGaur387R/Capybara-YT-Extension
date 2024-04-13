@@ -27,7 +27,7 @@ import rateLimiter from './middleware/rateLimiter.mjs';
 const nonce = randomBytes(16).toString('base64');
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT;
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 app.use(cors())
@@ -158,7 +158,7 @@ function startServer() {
 }
 
 app.listen(port, () => {
-    console.log(`server listing at http://localhost:${port}`);
+    console.log(`server listing at ${process.env.WEB_URL}${port}`);
 });
 
 startServer();
