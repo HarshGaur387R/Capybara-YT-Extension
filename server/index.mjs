@@ -1,5 +1,5 @@
-import dotenv from 'dotenv'; // Import the config function from dotenv
-dotenv.config({path:'config/.env'});
+// import dotenv from 'dotenv'; // Import the config function from dotenv
+// dotenv.config({path:'config/.env'});
 
 import express from 'express';
 import { connectToDatabase } from './db.mjs';
