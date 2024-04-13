@@ -133,8 +133,13 @@ export async function verifyAccessKey(req, res, next) {
         const id = jwt.verify(accessKey, process.env.ACCESS_KEY_SECRET)._id;
 
         const user = await userSchema.findById(id);
+
+        console.log('id:', id, '/n', 'accessKey:', accessKey, '/n', 'user:',user.name);
+
         if (!user) throw Object.assign(new Error("Invalid accessKey. No user authorized with this key"), { statusCode: https_codes.UNAUTH_ERROR });
         if (user.accessKey !== accessKey) throw Object.assign(new Error("Invalid accessKey. This key is not authorized to any user"), { statusCode: https_codes.UNAUTH_ERROR });
+
+        console.log('Everything running successfully: ');
 
         return res.status(https_codes.SUCCESS).json({ success: true, msg: "Authorized" });
     } catch (error) {
