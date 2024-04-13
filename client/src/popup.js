@@ -1,4 +1,4 @@
-const url = 'http://localhost:5000/'
+const url = 'https://capybara-yt-extension.vercel.app/'
 const formContainer = document.getElementById('formContainer');
 const authorizedContainer = document.getElementById('authorizedContainer');
 
