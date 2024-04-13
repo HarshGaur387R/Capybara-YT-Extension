@@ -23,10 +23,17 @@ The Capybara YouTube Video Downloader Extension is a browser extension designed 
 
 ### Running Website
 
-1. Run command  `git clone https://github.com/HarshGaur387R/Capybara-YT-Extension`
-2. Run Command  `cd Capybara-YT-Extension/server`
-3. Run Command  `npm i`
-4. Run Command  `nodemon ./index.mjs`
+1. Run command to copy repo:  `git clone https://github.com/HarshGaur387R/Capybara-YT-Extension`
+2. Run Command to change directory into server:  `cd Capybara-YT-Extension/server`
+3. Run Command to install node modules:  `npm i`
+
+### Initializing config.mjs file
+
+1. Create a folder `config` in 'server' dir
+2. Create a file `config.mjs` in `config`
+3. Copy content of the `sample-config.mj` in `config/config.mjs` file (And dont forget to fill the reqirements like mongodb-connection-string, email and password)
+4. Run Command  `nodemon ./index.mjs` for devlopment
+5. Run Command `node ./index.mjs` for production
 
 ## Installation For Capybara-extension
 
