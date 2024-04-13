@@ -39,6 +39,7 @@ app.use(
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: ["'self'", 'https://capybara-yt-extension-g5w6srh3o-harshs-projects-d05cf452.vercel.app'],
+            connectSrc: ['https://capybara-yt-extension-g5w6srh3o-harshs-projects-d05cf452.vercel.app'],
             scriptSrc: ["'self'", 'trusted-cdn.com', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', `'nonce-${nonce}'`],
             styleSrc: ["'self'", 'fonts.googleapis.com', 'cdn.jsdelivr.net', `'nonce-${nonce}'`],
             // Add more directives as needed
