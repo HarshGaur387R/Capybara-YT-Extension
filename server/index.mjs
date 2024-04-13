@@ -30,7 +30,10 @@ const app = express();
 const port = process.env.PORT;
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
-app.use(cors())
+app.use(cors({
+    origin: 'https://capybara-yt-extension-bmqt9dvo5-harshs-projects-d05cf452.vercel.app'
+}));
+
 app.use(express.json({ limit: '20kb' }));
 app.use(expressDevice.capture());
 
