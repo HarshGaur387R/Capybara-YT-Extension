@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import configs from "./config/config.mjs";
 
 export async function connectToDatabase() {
-    mongoose.connect(`${configs.MONGODB_CONNECTION_STRING}/${configs.DATABASE_NAME}?retryWrites=true&writeConcern=majority`)
+    mongoose.connect(`${process.env.MONGODB_CONNECTION_STRING}/${process.env.DATABASE_NAME}?retryWrites=true&writeConcern=majority`)
     .then(() => {
         console.log('Connected to mongodb database');
     }).catch((error) => {

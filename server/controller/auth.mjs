@@ -16,7 +16,7 @@ export async function signupController(req, res, next) {
         const user = await userSchema.findOne({ email: req.body.email });
         if (user) throw Object.assign(new Error("Email address is already taken."), { statusCode: https_codes.CONFLICT_ERROR })
 
-        const salt = await bcrypt.genSalt(configs.SALT_ROUND);
+        const salt = await bcrypt.genSalt(process.env.SALT_ROUND);
         const passwordHash = await bcrypt.hash(req.body.password, salt);
 
         const data = { name: req.body.name, email: req.body.email, password: passwordHash, lastLogin: Date.now() };
@@ -100,7 +100,7 @@ export async function forgetPassword(req, res, next) {
         if (!req.body.email) throw Object.assign(new Error("Email not found."), { statusCode: https_codes.BAD_REQUEST });
         if (!req.body.password) throw Object.assign(new Error("Password is not provided"), { statusCode: https_codes.BAD_REQUEST });
 
-        const salt = await bcrypt.genSalt(configs.SALT_ROUND);
+        const salt = await bcrypt.genSalt(process.env.SALT_ROUND);
         const passwordHash = await bcrypt.hash(req.body.password, salt);
 
         const userEmail = req.body.email;
@@ -130,7 +130,7 @@ export async function verifyAccessKey(req, res, next) {
         if (!req.body.accessKey) throw Object.assign(new Error("Error on gathering user data. Please login again."), { statusCode: https_codes.BAD_REQUEST });
         const accessKey = req.body.accessKey;
 
-        const id = jwt.verify(accessKey, configs.ACCESS_KEY_SECRET)._id;
+        const id = jwt.verify(accessKey, process.env.ACCESS_KEY_SECRET)._id;
 
         const user = await userSchema.findById(id);
         if (!user) throw Object.assign(new Error("Invalid accessKey. No user authorized with this key"), { statusCode: https_codes.UNAUTH_ERROR });

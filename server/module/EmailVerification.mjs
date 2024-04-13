@@ -8,14 +8,14 @@ const jwt = jsonwebtoken;
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
-		user: configs.SERVICE_EMAIL,
-		pass: configs.SERVICE_EMAIL_PASSWORD
+		user: process.env.SERVICE_EMAIL,
+		pass: process.env.SERVICE_EMAIL_PASSWORD
 	}
 });
 
 export async function sendEmailVerificationCode(email, verificationCode) {
 	const mailOptions = {
-		from: configs.SERVICE_EMAIL,
+		from: process.env.SERVICE_EMAIL,
 		to: email,
 		subject: 'Email Verification Code',
 		html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

@@ -11,7 +11,7 @@ export async function tokenAuthenticator(req, res, next) {
         
         token = token.split(' ')[1];
 
-        const id = jwt.decode(token, configs.JWT_SECRET);
+        const id = jwt.decode(token, process.env.JWT_SECRET);
         
         if (!id || !id.user_id) return res.status(https_codes.BAD_REQUEST).json({ error: "Incorrect token is provided" });
 

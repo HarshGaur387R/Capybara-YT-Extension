@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'; // Import the config function from dotenv
+dotenv.config({path:'config/.env'});
+
 import express from 'express';
 import { connectToDatabase } from './db.mjs';
 import authRoute from './routes/auth.mjs';
@@ -19,6 +22,8 @@ import handleError from './middleware/errorHandling.mjs';
 import helmet from 'helmet';
 import { randomBytes } from 'crypto';
 import rateLimiter from './middleware/rateLimiter.mjs';
+
+
 const nonce = randomBytes(16).toString('base64');
 
 const app = express();
@@ -51,7 +56,7 @@ const MongoDBStoreSession = MongoDBStore(session);
 
 // Configure MongoDB session store
 const store = new MongoDBStoreSession({
-    uri: `${configs.MONGODB_CONNECTION_STRING}/${configs.DATABASE_NAME}`, // MongoDB connection URI
+    uri: `${process.env.MONGODB_CONNECTION_STRING}/${process.env.DATABASE_NAME}`, // MongoDB connection URI
     collection: "Sessions", // Collection name for storing sessions
 });
 store.on('error', (error) => { console.error('MongoDB session store error:', error) });
@@ -59,7 +64,7 @@ store.on('error', (error) => { console.error('MongoDB session store error:', err
 
 // Enable Session for root route -
 app.use(session({
-    secret: configs.SESSIONS_SECRET,
+    secret: process.env.SESSIONS_SECRET,
     resave: false,
     saveUninitialized: false,
     store: store,
@@ -147,7 +152,6 @@ function startServer() {
     app.use('/api/v1/auth', authRoute);
     app.use('/api/v1/user', userRoute);
     app.use('/api/v1/extension', rateLimiter(5, 5000, "Wait few seconds before sending new requests"), extensionRoute);
-
 
     // error handling middleware
     app.use(handleError);

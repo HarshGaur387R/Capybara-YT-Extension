@@ -13,7 +13,7 @@ export async function checkAccessKey(req, res, next) {
         }
 
         const accessKey = req.body.accessKey;
-        const id = jwt.verify(accessKey, configs.ACCESS_KEY_SECRET)._id;
+        const id = jwt.verify(accessKey, process.env.ACCESS_KEY_SECRET)._id;
 
         if (!id) return res.status(https_codes.BAD_REQUEST).json({ success: false, error: { msg: "Incorrect token is provided" } });
 
