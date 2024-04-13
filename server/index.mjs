@@ -6,7 +6,7 @@ import { connectToDatabase } from './db.mjs';
 import authRoute from './routes/auth.mjs';
 import userRoute from './routes/user.mjs'
 import extensionRoute from './routes/extension.mjs'
-import configs from './config/config.mjs';
+// import configs from './config/config.mjs';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
 import ExpressMongoSanitize from 'express-mongo-sanitize';

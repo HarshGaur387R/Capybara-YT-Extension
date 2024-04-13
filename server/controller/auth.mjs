@@ -1,6 +1,6 @@
 import userSchema from '../models/User.mjs';
 import https_codes from '../constants/http_code.mjs';
-import configs from '../config/config.mjs';
+//import configs from '../config/config.mjs';
 import bcrypt from 'bcrypt'
 import { sendEmailVerificationCode } from '../module/EmailVerification.mjs';
 import generateVerificationCode from '../module/generateVerificationCode.mjs'

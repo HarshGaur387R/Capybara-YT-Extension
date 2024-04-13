@@ -1,4 +1,4 @@
-import configs from "../config/config.mjs";
+// import configs from "../config/config.mjs";
 import https_codes from "../config/http_code.mjs";
 import jsonwebtoken from 'jsonwebtoken';
 

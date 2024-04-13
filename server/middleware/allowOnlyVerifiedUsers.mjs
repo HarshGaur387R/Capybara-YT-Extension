@@ -1,6 +1,6 @@
 import User from "../models/User.mjs";
 import jsonwebtoken from 'jsonwebtoken'
-import configs from "../config/config.mjs";
+// import configs from "../config/config.mjs";
 const jwt = jsonwebtoken;
 
 

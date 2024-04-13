@@ -1,6 +1,6 @@
 import https_codes from '../constants/http_code.mjs';
 import bcrypt from 'bcrypt';
-import configs from '../config/config.mjs';
+// import configs from '../config/config.mjs';
 import { sendEmailVerificationCode } from '../module/EmailVerification.mjs';
 import generateVerificationCode from '../module/generateVerificationCode.mjs';
 import userSchema from '../models/User.mjs'
@@ -57,7 +57,7 @@ export async function changePassword(req, res, next) {
         if (!req.session.user.email) throw Object.assign(new Error("Email not found."), { statusCode: https_codes.BAD_REQUEST });
         if (!req.body.password) throw Object.assign(new Error("Password is not provided"), { statusCode: https_codes.BAD_REQUEST });
 
-        const salt = await bcrypt.genSalt(configs.SALT_ROUND);
+        const salt = await bcrypt.genSalt(process.env.SALT_ROUND);
         const passwordHash = await bcrypt.hash(req.body.password, salt);
 
         const userEmail = req.session.user.email;
@@ -112,7 +112,7 @@ export async function generateAccessKey(req, res, next) {
         const user = req.session.user;
         const _id = user._id;
 
-        const accessKey = jwt.sign({ _id }, configs.ACCESS_KEY_SECRET);
+        const accessKey = jwt.sign({ _id }, process.env.ACCESS_KEY_SECRET);
         let newUser = await userSchema.findById(_id);
 
         if (!newUser) throw Object.assign(new Error("User not found"), { statusCode: https_codes.UNAUTH_ERROR });

@@ -1,6 +1,6 @@
 import jsonwebtoken from "jsonwebtoken";
 import nodemailer from "nodemailer"
-import configs from "../config/config.mjs";
+// import configs from "../config/config.mjs";
 import https_codes from "../constants/http_code.mjs";
 
 const jwt = jsonwebtoken;
