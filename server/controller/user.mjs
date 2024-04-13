@@ -57,7 +57,7 @@ export async function changePassword(req, res, next) {
         if (!req.session.user.email) throw Object.assign(new Error("Email not found."), { statusCode: https_codes.BAD_REQUEST });
         if (!req.body.password) throw Object.assign(new Error("Password is not provided"), { statusCode: https_codes.BAD_REQUEST });
 
-        const salt = await bcrypt.genSalt(process.env.SALT_ROUND);
+        const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUND));
         const passwordHash = await bcrypt.hash(req.body.password, salt);
 
         const userEmail = req.session.user.email;
