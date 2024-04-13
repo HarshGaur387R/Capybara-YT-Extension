@@ -30,25 +30,28 @@ const app = express();
 const port = process.env.PORT;
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
-app.use(cors({
-    origin: ['*.vercel.app', 'chrome-extension://*']
-}));
+// app.use(cors({
+//     origin: ['*.vercel.app', 'chrome-extension://*']
+// }));
+
+app.use(cors());
 
 app.use(express.json({ limit: '20kb' }));
 app.use(expressDevice.capture());
 
-app.use(helmet())
-app.use(
-    helmet.contentSecurityPolicy({
-        directives: {
-            defaultSrc: ["'self'", '*.vercel.app', 'chrome-extension://*'],
-            connectSrc: ["'self'", '*.vercel.app', 'chrome-extension://*'],
-            scriptSrc: ["'self'", 'trusted-cdn.com', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', `'nonce-${nonce}'`],
-            styleSrc: ["'self'", 'fonts.googleapis.com', 'cdn.jsdelivr.net', `'nonce-${nonce}'`],
-            // Add more directives as needed
-        },
-    })
-);
+// app.use(helmet())
+// app.use(
+//     helmet.contentSecurityPolicy({
+//         directives: {
+//             defaultSrc: ["'self'", '*.vercel.app', 'chrome-extension://*'],
+//             connectSrc: ["'self'", '*.vercel.app', 'chrome-extension://*'],
+//             scriptSrc: ["'self'", 'trusted-cdn.com', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', `'nonce-${nonce}'`],
+//             styleSrc: ["'self'", 'fonts.googleapis.com', 'cdn.jsdelivr.net', `'nonce-${nonce}'`],
+//             // Add more directives as needed
+//         },
+//     })
+// );
+
 app.use(helmet.noSniff()); // Prevent browsers from MIME sniffing
 app.use(helmet.xssFilter()); // Adds the X-XSS-Protection header
 
