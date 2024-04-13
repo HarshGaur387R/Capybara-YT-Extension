@@ -31,7 +31,7 @@ const port = process.env.PORT;
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 app.use(cors({
-    origin: 'https://capybara-yt-extension-bmqt9dvo5-harshs-projects-d05cf452.vercel.app'
+    origin: '*.vercel.app'
 }));
 
 app.use(express.json({ limit: '20kb' }));
@@ -41,8 +41,8 @@ app.use(helmet())
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            defaultSrc: ["'self'", 'https://capybara-yt-extension-g5w6srh3o-harshs-projects-d05cf452.vercel.app'],
-            connectSrc: ['https://capybara-yt-extension-g5w6srh3o-harshs-projects-d05cf452.vercel.app'],
+            defaultSrc: ["'self'", '*.vercel.app'],
+            connectSrc: ["'self'", '*.vercel.app'],
             scriptSrc: ["'self'", 'trusted-cdn.com', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', `'nonce-${nonce}'`],
             styleSrc: ["'self'", 'fonts.googleapis.com', 'cdn.jsdelivr.net', `'nonce-${nonce}'`],
             // Add more directives as needed
