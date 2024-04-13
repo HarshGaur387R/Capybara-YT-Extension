@@ -95,6 +95,7 @@ body {
 }
 
 .verification-code-inputs input {
+    color: white;
     width: 60px;
     padding: 10px;
     text-align: center;
@@ -183,6 +184,7 @@ body {
     }
 
     .verification-code-inputs input{
+        color: white;
         width: 30px;
         padding: 0%;
     }
